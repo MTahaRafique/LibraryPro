@@ -1,0 +1,1539 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>LibraryPro - Issue Book</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg: #08111f;
+            --sidebar: #0d1726;
+            --card: #111d2e;
+            --card2: #162337;
+            --text: #f8fafc;
+            --muted: #94a3b8;
+            --border: #24344a;
+            --primary: #3b82f6;
+            --primary2: #06b6d4;
+            --success: #22c55e;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+            --input: #0b1625;
+        }
+
+        body.light {
+            --bg: #f1f5f9;
+            --sidebar: #ffffff;
+            --card: #ffffff;
+            --card2: #f8fafc;
+            --text: #0f172a;
+            --muted: #64748b;
+            --border: #e2e8f0;
+            --input: #f8fafc;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            transition: .3s;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        button,
+        input,
+        select,
+        textarea {
+            font-family: inherit;
+        }
+
+        /* ================= SIDEBAR ================= */
+
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 250px;
+            height: 100vh;
+            background: var(--sidebar);
+            border-right: 1px solid var(--border);
+            padding: 20px 15px;
+            z-index: 1000;
+            transition: .3s;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px;
+            margin-bottom: 25px;
+        }
+
+        .logo-icon {
+            width: 42px;
+            height: 42px;
+            border-radius: 12px;
+            background: linear-gradient(
+                135deg,
+                var(--primary),
+                var(--primary2)
+            );
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 21px;
+        }
+
+        .logo h2 {
+            font-size: 18px;
+        }
+
+        .logo p {
+            color: var(--muted);
+            font-size: 9px;
+            margin-top: 3px;
+        }
+
+        .menu-title {
+            color: var(--muted);
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 10px;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            border-radius: 9px;
+            color: var(--muted);
+            font-size: 13px;
+            margin-bottom: 5px;
+            transition: .2s;
+        }
+
+        .nav-link:hover {
+            background: var(--card2);
+            color: var(--text);
+        }
+
+        .nav-link.active {
+            background: rgba(59,130,246,.13);
+            color: var(--primary);
+        }
+
+        .logout {
+            position: absolute;
+            left: 15px;
+            right: 15px;
+            bottom: 20px;
+        }
+
+        /* ================= MAIN ================= */
+
+        .main {
+            margin-left: 250px;
+            min-height: 100vh;
+        }
+
+        .topbar {
+            height: 75px;
+            padding: 0 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 500;
+            background: var(--bg);
+        }
+
+        .top-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .topbar h1 {
+            font-size: 21px;
+        }
+
+        .topbar p {
+            color: var(--muted);
+            font-size: 11px;
+            margin-top: 4px;
+        }
+
+        .theme-btn,
+        .menu-btn {
+            width: 40px;
+            height: 40px;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            background: var(--card);
+            color: var(--text);
+            cursor: pointer;
+            font-size: 17px;
+        }
+
+        .menu-btn {
+            display: none;
+        }
+
+        /* ================= CONTENT ================= */
+
+        .content {
+            padding: 30px;
+        }
+
+        .page-header {
+            margin-bottom: 25px;
+        }
+
+        .page-header h2 {
+            font-size: 26px;
+        }
+
+        .page-header p {
+            color: var(--muted);
+            font-size: 12px;
+            margin-top: 5px;
+        }
+
+        /* ================= LAYOUT ================= */
+
+        .issue-layout {
+            display: grid;
+            grid-template-columns: minmax(0, 1.4fr) minmax(280px, .6fr);
+            gap: 20px;
+            align-items: start;
+        }
+
+        .card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            overflow: hidden;
+        }
+
+        .card-header {
+            padding: 20px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .card-header h3 {
+            font-size: 16px;
+        }
+
+        .card-header p {
+            color: var(--muted);
+            font-size: 10px;
+            margin-top: 5px;
+        }
+
+        .card-body {
+            padding: 20px;
+        }
+
+        /* ================= FORM ================= */
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 17px;
+        }
+
+        .form-group.full {
+            grid-column: 1 / -1;
+        }
+
+        label {
+            display: block;
+            font-size: 11px;
+            font-weight: bold;
+            margin-bottom: 7px;
+        }
+
+        .required {
+            color: var(--danger);
+        }
+
+        .form-control {
+            width: 100%;
+            height: 44px;
+            border: 1px solid var(--border);
+            border-radius: 9px;
+            background: var(--input);
+            color: var(--text);
+            outline: none;
+            padding: 0 12px;
+            font-size: 11px;
+        }
+
+        select.form-control {
+            cursor: pointer;
+        }
+
+        .form-control:focus {
+            border-color: var(--primary);
+        }
+
+        .help {
+            color: var(--muted);
+            font-size: 9px;
+            margin-top: 6px;
+        }
+
+        .submit-area {
+            margin-top: 22px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+
+        .reset-btn,
+        .issue-btn {
+            height: 42px;
+            padding: 0 18px;
+            border-radius: 9px;
+            cursor: pointer;
+            font-size: 11px;
+            font-weight: bold;
+        }
+
+        .reset-btn {
+            border: 1px solid var(--border);
+            background: var(--input);
+            color: var(--text);
+        }
+
+        .issue-btn {
+            border: none;
+            color: white;
+            background: linear-gradient(
+                135deg,
+                var(--primary),
+                var(--primary2)
+            );
+        }
+
+        /* ================= BOOK PREVIEW ================= */
+
+        .preview {
+            padding: 20px;
+        }
+
+        .preview-box {
+            border: 1px dashed var(--border);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            min-height: 220px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .preview-icon {
+            width: 65px;
+            height: 78px;
+            border-radius: 9px;
+            background: linear-gradient(
+                135deg,
+                var(--primary),
+                var(--primary2)
+            );
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 30px;
+            margin-bottom: 15px;
+        }
+
+        .preview-title {
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .preview-author {
+            color: var(--muted);
+            font-size: 10px;
+            margin-top: 5px;
+        }
+
+        .preview-status {
+            margin-top: 12px;
+            padding: 6px 10px;
+            border-radius: 7px;
+            background: rgba(34,197,94,.1);
+            color: var(--success);
+            font-size: 9px;
+            font-weight: bold;
+        }
+
+        /* ================= INFO ================= */
+
+        .info-list {
+            padding: 20px;
+        }
+
+        .info-item {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 18px;
+        }
+
+        .info-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .info-number {
+            width: 27px;
+            height: 27px;
+            flex-shrink: 0;
+            border-radius: 50%;
+            background: rgba(59,130,246,.1);
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            font-weight: bold;
+        }
+
+        .info-item h4 {
+            font-size: 11px;
+            margin-bottom: 3px;
+        }
+
+        .info-item p {
+            color: var(--muted);
+            font-size: 9px;
+            line-height: 1.5;
+        }
+
+        /* ================= FLASH ================= */
+
+        .flash {
+            padding: 12px 15px;
+            border-radius: 9px;
+            margin-bottom: 15px;
+            font-size: 11px;
+        }
+
+        .flash-success {
+            background: rgba(34,197,94,.1);
+            color: var(--success);
+        }
+
+        .flash-danger {
+            background: rgba(239,68,68,.1);
+            color: var(--danger);
+        }
+
+        .flash-warning {
+            background: rgba(245,158,11,.1);
+            color: var(--warning);
+        }
+
+        /* ================= RESPONSIVE ================= */
+
+        @media(max-width: 950px) {
+            .issue-layout {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media(max-width: 900px) {
+
+            .sidebar {
+                transform: translateX(-100%);
+            }
+
+            .sidebar.open {
+                transform: translateX(0);
+            }
+
+            .main {
+                margin-left: 0;
+            }
+
+            .menu-btn {
+                display: block;
+            }
+
+            .topbar {
+                padding: 0 18px;
+            }
+
+            .content {
+                padding: 20px;
+            }
+        }
+
+        @media(max-width: 600px) {
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .form-group.full {
+                grid-column: auto;
+            }
+
+            .submit-area {
+                flex-direction: column;
+            }
+
+            .reset-btn,
+            .issue-btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- ================= SIDEBAR ================= -->
+
+    <aside class="sidebar" id="sidebar">
+
+        <div class="logo">
+            <div class="logo-icon">
+                📚
+            </div>
+
+            <div>
+                <h2>LibraryPro</h2>
+                <p>Library Platform</p>
+            </div>
+        </div>
+
+        <div class="menu-title">
+            Main Menu
+        </div>
+
+        <a href="{{ url_for('dashboard') }}" class="nav-link">
+            <span>📊</span>
+            Dashboard
+        </a>
+
+        <a href="{{ url_for('books') }}" class="nav-link">
+            <span>📚</span>
+            Books
+        </a>
+
+        <a href="{{ url_for('members') }}" class="nav-link">
+            <span>👥</span>
+            Members
+        </a>
+
+        <div class="menu-title">
+            Circulation
+        </div>
+
+        <a href="{{ url_for('issue_book_page') }}" class="nav-link active">
+            <span>📖</span>
+            Issue Book
+        </a>
+
+        <a href="{{ url_for('return_book_page') }}" class="nav-link">
+            <span>↩️</span>
+            Return Book
+        </a>
+
+        <div class="menu-title">
+            Analytics
+        </div>
+
+        <a href="{{ url_for('reports') }}" class="nav-link">
+            <span>📈</span>
+            Reports
+        </a>
+
+        <a href="{{ url_for('logout') }}" class="nav-link logout">
+            <span>🚪</span>
+            Logout
+        </a>
+
+    </aside>
+
+
+    <!-- ================= MAIN ================= -->
+
+    <main class="main">
+
+        <header class="topbar">
+
+            <div class="top-actions">
+
+                <button
+                    class="menu-btn"
+                    id="menuBtn"
+                    type="button"
+                >
+                    ☰
+                </button>
+
+                <div>
+                    <h1>
+                        Issue Book
+                    </h1>
+
+                    <p>
+                        Issue a book to a library member
+                    </p>
+                </div>
+
+            </div>
+
+            <button
+                class="theme-btn"
+                id="themeBtn"
+                type="button"
+            >
+                🌙
+            </button>
+
+        </header>
+
+
+        <section class="content">
+
+            <!-- ================= FLASH ================= -->
+
+            {% with messages = get_flashed_messages(with_categories=true) %}
+
+                {% if messages %}
+
+                    {% for category, message in messages %}
+
+                        <div class="flash flash-{{ category }}">
+                            {{ message }}
+                        </div>
+
+                    {% endfor %}
+
+                {% endif %}
+
+            {% endwith %}
+
+
+            <div class="page-header">
+
+                <h2>
+                    Issue Library Book
+                </h2>
+
+                <p>
+                    Select a member and an available book to create an issue record.
+                </p>
+
+            </div>
+
+
+            <div class="issue-layout">
+
+                <!-- ================= FORM ================= -->
+
+                <div class="card">
+
+                    <div class="card-header">
+
+                        <h3>
+                            Issue Information
+                        </h3>
+
+                        <p>
+                            Enter the required information below.
+                        </p>
+
+                    </div>
+
+
+                    <div class="card-body">
+
+                        <!-- IMPORTANT:
+                             Backend expects:
+                             book_id
+                             member_id
+                        -->
+
+                        <form
+                            method="POST"
+                            action="{{ url_for('issue_book') }}"
+                            id="issueForm"
+                        >
+
+                            <div class="form-grid">
+
+                                <!-- ================= MEMBER ================= -->
+
+                                <div class="form-group full">
+
+                                    <label>
+                                        Select Member
+                                        <span class="required">*</span>
+                                    </label>
+
+                                    <select
+                                        class="form-control"
+                                        name="member_id"
+                                        id="memberSelect"
+                                        required
+                                    >
+
+                                        <option value="">
+                                            -- Select Member --
+                                        </option>
+
+                                        {% for member in members %}
+
+                                            <option
+                                                value="{{ member.memberid }}"
+                                                data-name="{{ member.name }}"
+                                                data-email="{{ member.email or '' }}"
+                                            >
+                                                {{ member.name }}
+                                                -
+                                                {{ member.memberid }}
+                                            </option>
+
+                                        {% endfor %}
+
+                                    </select>
+
+                                    <div class="help">
+                                        Choose the member who will borrow this book.
+                                    </div>
+
+                                </div>
+
+
+                                <!-- ================= BOOK ================= -->
+
+                                <div class="form-group full">
+
+                                    <label>
+                                        Select Book
+                                        <span class="required">*</span>
+                                    </label>
+
+                                    <select
+                                        class="form-control"
+                                        name="book_id"
+                                        id="bookSelect"
+                                        required
+                                    >
+
+                                        <option value="">
+                                            -- Select Available Book --
+                                        </option>
+
+                                        {% for book in books %}
+
+                                            {% if book.availablequantity is not none and book.availablequantity > 0 %}
+
+                                                <option
+                                                    value="{{ book.bookid }}"
+                                                    data-title="{{ book.title }}"
+                                                    data-author="{{ book.author }}"
+                                                    data-isbn="{{ book.isbn or '' }}"
+                                                    data-available="{{ book.availablequantity }}"
+                                                >
+
+                                                    {{ book.title }}
+                                                    -
+                                                    {{ book.author }}
+
+                                                    ({{ book.availablequantity }} available)
+
+                                                </option>
+
+                                            {% endif %}
+
+                                        {% endfor %}
+
+                                    </select>
+
+                                    <div class="help">
+                                        Only books with available copies are shown.
+                                    </div>
+
+                                </div>
+
+
+                                <!-- ================= ISSUE DATE ================= -->
+
+                                <div class="form-group">
+
+                                    <label>
+                                        Issue Date
+                                        <span class="required">*</span>
+                                    </label>
+
+                                    <input
+                                        class="form-control"
+                                        type="date"
+                                        name="issue_date"
+                                        id="issueDate"
+                                        required
+                                    >
+
+                                </div>
+
+
+                                <!-- ================= DUE DATE ================= -->
+
+                                <div class="form-group">
+
+                                    <label>
+                                        Due Date
+                                        <span class="required">*</span>
+                                    </label>
+
+                                    <input
+                                        class="form-control"
+                                        type="date"
+                                        name="due_date"
+                                        id="dueDate"
+                                        required
+                                    >
+
+                                </div>
+
+
+                                <!-- ================= NOTES ================= -->
+
+                                <div class="form-group full">
+
+                                    <label>
+                                        Notes
+                                    </label>
+
+                                    <textarea
+                                        class="form-control"
+                                        name="notes"
+                                        id="notes"
+                                        placeholder="Optional notes..."
+                                        style="height:90px;padding-top:12px;resize:vertical;"
+                                    ></textarea>
+
+                                </div>
+
+                            </div>
+
+
+                            <div class="submit-area">
+
+                                <button
+                                    type="reset"
+                                    class="reset-btn"
+                                    onclick="resetPreview()"
+                                >
+                                    Clear
+                                </button>
+
+                                <button
+                                    type="submit"
+                                    class="issue-btn"
+                                    id="issueSubmitBtn"
+                                >
+                                    📖 Issue Book
+                                </button>
+
+                            </div>
+
+                        </form>
+
+                    </div>
+
+                </div>
+
+
+                <!-- ================= RIGHT SIDE ================= -->
+
+                <div>
+
+                    <!-- BOOK PREVIEW -->
+
+                    <div class="card" style="margin-bottom:20px;">
+
+                        <div class="card-header">
+
+                            <h3>
+                                Book Preview
+                            </h3>
+
+                            <p>
+                                Selected book information
+                            </p>
+
+                        </div>
+
+                        <div class="preview">
+
+                            <div
+                                class="preview-box"
+                                id="bookPreview"
+                            >
+
+                                <div class="preview-icon">
+                                    📖
+                                </div>
+
+                                <div
+                                    class="preview-title"
+                                    id="previewTitle"
+                                >
+                                    No Book Selected
+                                </div>
+
+                                <div
+                                    class="preview-author"
+                                    id="previewAuthor"
+                                >
+                                    Select a book to view details
+                                </div>
+
+                                <div
+                                    class="preview-status"
+                                    id="previewStatus"
+                                >
+                                    Available
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- MEMBER PREVIEW -->
+
+                    <div class="card" style="margin-bottom:20px;">
+
+                        <div class="card-header">
+
+                            <h3>
+                                Member
+                            </h3>
+
+                            <p>
+                                Selected member information
+                            </p>
+
+                        </div>
+
+                        <div class="preview">
+
+                            <div
+                                class="preview-box"
+                                style="min-height:150px;"
+                            >
+
+                                <div
+                                    class="preview-title"
+                                    id="memberName"
+                                >
+                                    No Member Selected
+                                </div>
+
+                                <div
+                                    class="preview-author"
+                                    id="memberEmail"
+                                >
+                                    Select a member
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- STEPS -->
+
+                    <div class="card">
+
+                        <div class="card-header">
+
+                            <h3>
+                                How It Works
+                            </h3>
+
+                        </div>
+
+                        <div class="info-list">
+
+                            <div class="info-item">
+
+                                <div class="info-number">
+                                    1
+                                </div>
+
+                                <div>
+                                    <h4>
+                                        Select Member
+                                    </h4>
+
+                                    <p>
+                                        Choose the registered member who wants to borrow a book.
+                                    </p>
+                                </div>
+
+                            </div>
+
+
+                            <div class="info-item">
+
+                                <div class="info-number">
+                                    2
+                                </div>
+
+                                <div>
+                                    <h4>
+                                        Select Book
+                                    </h4>
+
+                                    <p>
+                                        Choose a book that currently has available copies.
+                                    </p>
+                                </div>
+
+                            </div>
+
+
+                            <div class="info-item">
+
+                                <div class="info-number">
+                                    3
+                                </div>
+
+                                <div>
+                                    <h4>
+                                        Set Due Date
+                                    </h4>
+
+                                    <p>
+                                        Select when the member should return the book.
+                                    </p>
+                                </div>
+
+                            </div>
+
+
+                            <div class="info-item">
+
+                                <div class="info-number">
+                                    4
+                                </div>
+
+                                <div>
+                                    <h4>
+                                        Issue Book
+                                    </h4>
+
+                                    <p>
+                                        Click Issue Book to create the circulation record.
+                                    </p>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- ================= JAVASCRIPT ================= -->
+
+    <script>
+
+        /* ================= THEME ================= */
+
+        const themeBtn =
+            document.getElementById("themeBtn");
+
+        const savedTheme =
+            localStorage.getItem("library_theme");
+
+
+        if (savedTheme === "light") {
+
+            document.body.classList.add("light");
+
+            themeBtn.textContent = "☀️";
+
+        }
+
+
+        themeBtn.addEventListener(
+            "click",
+            function () {
+
+                document.body.classList.toggle("light");
+
+                if (
+                    document.body.classList.contains("light")
+                ) {
+
+                    localStorage.setItem(
+                        "library_theme",
+                        "light"
+                    );
+
+                    themeBtn.textContent = "☀️";
+
+                } else {
+
+                    localStorage.setItem(
+                        "library_theme",
+                        "dark"
+                    );
+
+                    themeBtn.textContent = "🌙";
+
+                }
+
+            }
+        );
+
+
+        /* ================= MOBILE MENU ================= */
+
+        const menuBtn =
+            document.getElementById("menuBtn");
+
+        const sidebar =
+            document.getElementById("sidebar");
+
+
+        menuBtn.addEventListener(
+            "click",
+            function () {
+
+                sidebar.classList.toggle("open");
+
+            }
+        );
+
+
+        /* ================= FORM ELEMENTS ================= */
+
+        const issueForm =
+            document.getElementById("issueForm");
+
+        const issueDate =
+            document.getElementById("issueDate");
+
+        const dueDate =
+            document.getElementById("dueDate");
+
+        const bookSelect =
+            document.getElementById("bookSelect");
+
+        const memberSelect =
+            document.getElementById("memberSelect");
+
+
+        /* ================= DATES ================= */
+
+        function formatDate(date) {
+
+            const year =
+                date.getFullYear();
+
+            const month =
+                String(
+                    date.getMonth() + 1
+                ).padStart(2, "0");
+
+            const day =
+                String(
+                    date.getDate()
+                ).padStart(2, "0");
+
+            return `${year}-${month}-${day}`;
+        }
+
+
+        const today =
+            new Date();
+
+        const todayString =
+            formatDate(today);
+
+
+        issueDate.value =
+            todayString;
+
+        issueDate.min =
+            todayString;
+
+
+        const defaultDue =
+            new Date(today);
+
+        defaultDue.setDate(
+            defaultDue.getDate() + 14
+        );
+
+
+        dueDate.value =
+            formatDate(defaultDue);
+
+        dueDate.min =
+            todayString;
+
+
+        /* ================= BOOK PREVIEW ================= */
+
+        bookSelect.addEventListener(
+            "change",
+            function () {
+
+                const selected =
+                    bookSelect.options[
+                        bookSelect.selectedIndex
+                    ];
+
+
+                if (!selected.value) {
+
+                    document.getElementById(
+                        "previewTitle"
+                    ).textContent =
+                        "No Book Selected";
+
+
+                    document.getElementById(
+                        "previewAuthor"
+                    ).textContent =
+                        "Select a book to view details";
+
+
+                    document.getElementById(
+                        "previewStatus"
+                    ).textContent =
+                        "Available";
+
+                    return;
+                }
+
+
+                const title =
+                    selected.dataset.title || "";
+
+
+                const author =
+                    selected.dataset.author || "";
+
+
+                const available =
+                    selected.dataset.available || "0";
+
+
+                document.getElementById(
+                    "previewTitle"
+                ).textContent =
+                    title;
+
+
+                document.getElementById(
+                    "previewAuthor"
+                ).textContent =
+                    author +
+                    " • " +
+                    available +
+                    " copies available";
+
+
+                document.getElementById(
+                    "previewStatus"
+                ).textContent =
+                    "✓ Available";
+
+            }
+        );
+
+
+        /* ================= MEMBER PREVIEW ================= */
+
+        memberSelect.addEventListener(
+            "change",
+            function () {
+
+                const selected =
+                    memberSelect.options[
+                        memberSelect.selectedIndex
+                    ];
+
+
+                if (!selected.value) {
+
+                    document.getElementById(
+                        "memberName"
+                    ).textContent =
+                        "No Member Selected";
+
+
+                    document.getElementById(
+                        "memberEmail"
+                    ).textContent =
+                        "Select a member";
+
+                    return;
+                }
+
+
+                document.getElementById(
+                    "memberName"
+                ).textContent =
+                    selected.dataset.name || "";
+
+
+                document.getElementById(
+                    "memberEmail"
+                ).textContent =
+                    selected.dataset.email ||
+                    "No email available";
+
+            }
+        );
+
+
+        /* ================= DUE DATE VALIDATION ================= */
+
+        dueDate.addEventListener(
+            "change",
+            function () {
+
+                if (
+                    dueDate.value &&
+                    issueDate.value &&
+                    dueDate.value < issueDate.value
+                ) {
+
+                    alert(
+                        "Due date cannot be before issue date."
+                    );
+
+                    dueDate.value =
+                        issueDate.value;
+
+                }
+
+            }
+        );
+
+
+        issueDate.addEventListener(
+            "change",
+            function () {
+
+                dueDate.min =
+                    issueDate.value;
+
+
+                if (
+                    dueDate.value &&
+                    dueDate.value < issueDate.value
+                ) {
+
+                    dueDate.value =
+                        issueDate.value;
+
+                }
+
+            }
+        );
+
+
+        /* ================= FORM SUBMIT ================= */
+
+        issueForm.addEventListener(
+            "submit",
+            function(event) {
+
+                /*
+                 * IMPORTANT:
+                 * Backend expects:
+                 *
+                 * book_id
+                 * member_id
+                 *
+                 * These are now correctly
+                 * connected to the select fields.
+                 */
+
+                if (!memberSelect.value) {
+
+                    event.preventDefault();
+
+                    alert(
+                        "Please select a member."
+                    );
+
+                    memberSelect.focus();
+
+                    return;
+                }
+
+
+                if (!bookSelect.value) {
+
+                    event.preventDefault();
+
+                    alert(
+                        "Please select a book."
+                    );
+
+                    bookSelect.focus();
+
+                    return;
+                }
+
+
+                if (!issueDate.value) {
+
+                    event.preventDefault();
+
+                    alert(
+                        "Please select issue date."
+                    );
+
+                    issueDate.focus();
+
+                    return;
+                }
+
+
+                if (!dueDate.value) {
+
+                    event.preventDefault();
+
+                    alert(
+                        "Please select due date."
+                    );
+
+                    dueDate.focus();
+
+                    return;
+                }
+
+
+                if (
+                    dueDate.value <
+                    issueDate.value
+                ) {
+
+                    event.preventDefault();
+
+                    alert(
+                        "Due date cannot be before issue date."
+                    );
+
+                    dueDate.focus();
+
+                    return;
+                }
+
+            }
+        );
+
+
+        /* ================= RESET PREVIEW ================= */
+
+        function resetPreview() {
+
+            setTimeout(
+                function () {
+
+                    document.getElementById(
+                        "previewTitle"
+                    ).textContent =
+                        "No Book Selected";
+
+
+                    document.getElementById(
+                        "previewAuthor"
+                    ).textContent =
+                        "Select a book to view details";
+
+
+                    document.getElementById(
+                        "previewStatus"
+                    ).textContent =
+                        "Available";
+
+
+                    document.getElementById(
+                        "memberName"
+                    ).textContent =
+                        "No Member Selected";
+
+
+                    document.getElementById(
+                        "memberEmail"
+                    ).textContent =
+                        "Select a member";
+
+                },
+                10
+            );
+
+        }
+
+
+        /* ================= ESC ================= */
+
+        document.addEventListener(
+            "keydown",
+            function(event) {
+
+                if (event.key === "Escape") {
+
+                    sidebar.classList.remove("open");
+
+                }
+
+            }
+        );
+
+    </script>
+
+</body>
+</html>

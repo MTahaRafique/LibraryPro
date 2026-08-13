@@ -1,0 +1,1475 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>LibraryPro - Members</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg: #08111f;
+            --sidebar: #0d1726;
+            --card: #111d2e;
+            --card2: #162337;
+            --text: #f8fafc;
+            --muted: #94a3b8;
+            --border: #24344a;
+            --primary: #3b82f6;
+            --primary2: #06b6d4;
+            --success: #22c55e;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+            --input: #0b1625;
+        }
+
+        body.light {
+            --bg: #f1f5f9;
+            --sidebar: #ffffff;
+            --card: #ffffff;
+            --card2: #f8fafc;
+            --text: #0f172a;
+            --muted: #64748b;
+            --border: #e2e8f0;
+            --input: #f8fafc;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            transition: .3s;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        button,
+        input,
+        select {
+            font-family: inherit;
+        }
+
+        /* ================= SIDEBAR ================= */
+
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 250px;
+            height: 100vh;
+            background: var(--sidebar);
+            border-right: 1px solid var(--border);
+            padding: 20px 15px;
+            z-index: 1000;
+            transition: .3s;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px;
+            margin-bottom: 25px;
+        }
+
+        .logo-icon {
+            width: 42px;
+            height: 42px;
+            border-radius: 12px;
+            background: linear-gradient(
+                135deg,
+                var(--primary),
+                var(--primary2)
+            );
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 21px;
+        }
+
+        .logo h2 {
+            font-size: 18px;
+        }
+
+        .logo p {
+            color: var(--muted);
+            font-size: 9px;
+            margin-top: 3px;
+        }
+
+        .menu-title {
+            color: var(--muted);
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 10px;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            border-radius: 9px;
+            color: var(--muted);
+            font-size: 13px;
+            margin-bottom: 5px;
+            transition: .2s;
+        }
+
+        .nav-link:hover {
+            background: var(--card2);
+            color: var(--text);
+        }
+
+        .nav-link.active {
+            background: rgba(59,130,246,.13);
+            color: var(--primary);
+        }
+
+        .logout {
+            position: absolute;
+            left: 15px;
+            right: 15px;
+            bottom: 20px;
+        }
+
+        /* ================= MAIN ================= */
+
+        .main {
+            margin-left: 250px;
+            min-height: 100vh;
+        }
+
+        .topbar {
+            height: 75px;
+            padding: 0 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 500;
+            background: var(--bg);
+        }
+
+        .topbar h1 {
+            font-size: 21px;
+        }
+
+        .topbar p {
+            color: var(--muted);
+            font-size: 11px;
+            margin-top: 4px;
+        }
+
+        .top-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .theme-btn,
+        .menu-btn {
+            width: 40px;
+            height: 40px;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            background: var(--card);
+            color: var(--text);
+            cursor: pointer;
+            font-size: 17px;
+        }
+
+        .menu-btn {
+            display: none;
+        }
+
+        /* ================= CONTENT ================= */
+
+        .content {
+            padding: 30px;
+        }
+
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            gap: 15px;
+        }
+
+        .page-header h2 {
+            font-size: 26px;
+        }
+
+        .page-header p {
+            color: var(--muted);
+            font-size: 12px;
+            margin-top: 5px;
+        }
+
+        .add-btn {
+            border: none;
+            border-radius: 10px;
+            padding: 12px 17px;
+            background: linear-gradient(
+                135deg,
+                var(--primary),
+                var(--primary2)
+            );
+            color: white;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        /* ================= STATS ================= */
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .stat {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 18px;
+        }
+
+        .stat-icon {
+            width: 38px;
+            height: 38px;
+            border-radius: 10px;
+            background: rgba(59,130,246,.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 12px;
+        }
+
+        .stat h3 {
+            font-size: 22px;
+        }
+
+        .stat p {
+            color: var(--muted);
+            font-size: 10px;
+            margin-top: 4px;
+        }
+
+        /* ================= TOOLBAR ================= */
+
+        .toolbar {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 15px;
+            margin-bottom: 18px;
+        }
+
+        .search-box {
+            position: relative;
+            flex: 1;
+            max-width: 500px;
+        }
+
+        .search-box span {
+            position: absolute;
+            left: 14px;
+            top: 12px;
+        }
+
+        .search-box input {
+            width: 100%;
+            height: 42px;
+            border: 1px solid var(--border);
+            border-radius: 9px;
+            outline: none;
+            background: var(--input);
+            color: var(--text);
+            padding: 0 15px 0 40px;
+        }
+
+        .result-text {
+            color: var(--muted);
+            font-size: 11px;
+        }
+
+        /* ================= TABLE ================= */
+
+        .table-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 15px;
+            overflow: hidden;
+        }
+
+        .table-wrapper {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            min-width: 900px;
+            border-collapse: collapse;
+        }
+
+        th {
+            background: var(--card2);
+            color: var(--muted);
+            font-size: 10px;
+            text-align: left;
+            padding: 14px 16px;
+            text-transform: uppercase;
+        }
+
+        td {
+            padding: 15px 16px;
+            border-top: 1px solid var(--border);
+            font-size: 11px;
+        }
+
+        tr:hover td {
+            background: rgba(59,130,246,.03);
+        }
+
+        .member-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .avatar {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            background: linear-gradient(
+                135deg,
+                var(--primary),
+                var(--primary2)
+            );
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        .member-name {
+            font-weight: bold;
+        }
+
+        .member-email {
+            color: var(--muted);
+            font-size: 9px;
+            margin-top: 3px;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 5px 8px;
+            border-radius: 6px;
+            font-size: 9px;
+            font-weight: bold;
+        }
+
+        .badge-green {
+            color: var(--success);
+            background: rgba(34,197,94,.1);
+        }
+
+        .badge-red {
+            color: var(--danger);
+            background: rgba(239,68,68,.1);
+        }
+
+        .badge-blue {
+            color: var(--primary);
+            background: rgba(59,130,246,.1);
+        }
+
+        .actions {
+            display: flex;
+            gap: 6px;
+        }
+
+        .action-btn {
+            width: 31px;
+            height: 31px;
+            border: 1px solid var(--border);
+            border-radius: 7px;
+            background: var(--input);
+            color: var(--text);
+            cursor: pointer;
+        }
+
+        .action-btn:hover {
+            border-color: var(--primary);
+        }
+
+        /* ================= EMPTY ================= */
+
+        .empty {
+            text-align: center;
+            padding: 60px 20px;
+        }
+
+        .empty-icon {
+            font-size: 42px;
+            margin-bottom: 12px;
+        }
+
+        .empty h3 {
+            font-size: 17px;
+            margin-bottom: 5px;
+        }
+
+        .empty p {
+            color: var(--muted);
+            font-size: 11px;
+        }
+
+        /* ================= MODAL ================= */
+
+        .modal {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,.65);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            z-index: 3000;
+        }
+
+        .modal.show {
+            display: flex;
+        }
+
+        .modal-box {
+            width: 100%;
+            max-width: 600px;
+            max-height: 90vh;
+            overflow-y: auto;
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 17px;
+        }
+
+        .modal-header {
+            padding: 18px 20px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-header h3 {
+            font-size: 17px;
+        }
+
+        .close {
+            width: 32px;
+            height: 32px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            background: var(--input);
+            color: var(--text);
+            cursor: pointer;
+        }
+
+        .modal-body {
+            padding: 20px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .form-group.full {
+            grid-column: 1 / -1;
+        }
+
+        label {
+            display: block;
+            font-size: 11px;
+            font-weight: bold;
+            margin-bottom: 7px;
+        }
+
+        .form-control {
+            width: 100%;
+            height: 42px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            background: var(--input);
+            color: var(--text);
+            outline: none;
+            padding: 0 11px;
+            font-size: 11px;
+        }
+
+        .form-control:focus {
+            border-color: var(--primary);
+        }
+
+        .modal-footer {
+            padding: 15px 20px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: flex-end;
+            gap: 8px;
+        }
+
+        .cancel-btn,
+        .save-btn {
+            height: 39px;
+            padding: 0 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 11px;
+            font-weight: bold;
+        }
+
+        .cancel-btn {
+            border: 1px solid var(--border);
+            background: var(--input);
+            color: var(--text);
+        }
+
+        .save-btn {
+            border: none;
+            background: var(--primary);
+            color: white;
+        }
+
+        /* ================= FLASH ================= */
+
+        .flash {
+            padding: 12px 15px;
+            border-radius: 9px;
+            margin-bottom: 15px;
+            font-size: 11px;
+        }
+
+        .flash-success {
+            background: rgba(34,197,94,.1);
+            color: var(--success);
+        }
+
+        .flash-danger {
+            background: rgba(239,68,68,.1);
+            color: var(--danger);
+        }
+
+        .flash-warning {
+            background: rgba(245,158,11,.1);
+            color: var(--warning);
+        }
+
+        /* ================= RESPONSIVE ================= */
+
+        @media(max-width:900px) {
+
+            .sidebar {
+                transform: translateX(-100%);
+            }
+
+            .sidebar.open {
+                transform: translateX(0);
+            }
+
+            .main {
+                margin-left: 0;
+            }
+
+            .menu-btn {
+                display: block;
+            }
+
+            .topbar {
+                padding: 0 18px;
+            }
+
+            .content {
+                padding: 20px;
+            }
+
+            .stats {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media(max-width:600px) {
+
+            .page-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .add-btn {
+                width: 100%;
+            }
+
+            .toolbar {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .search-box {
+                max-width: none;
+            }
+
+            .stats {
+                grid-template-columns: 1fr;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .form-group.full {
+                grid-column: auto;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- SIDEBAR -->
+
+    <aside class="sidebar" id="sidebar">
+
+        <div class="logo">
+
+            <div class="logo-icon">
+                📚
+            </div>
+
+            <div>
+                <h2>LibraryPro</h2>
+                <p>Library Platform</p>
+            </div>
+
+        </div>
+
+
+        <div class="menu-title">
+            Main Menu
+        </div>
+
+
+        <a href="{{ url_for('dashboard') }}" class="nav-link">
+            <span>📊</span>
+            Dashboard
+        </a>
+
+
+        <a href="{{ url_for('books') }}" class="nav-link">
+            <span>📚</span>
+            Books
+        </a>
+
+
+        <a href="{{ url_for('members') }}" class="nav-link active">
+            <span>👥</span>
+            Members
+        </a>
+
+
+        <div class="menu-title">
+            Circulation
+        </div>
+
+
+        <a href="{{ url_for('issue_book_page') }}" class="nav-link">
+            <span>📖</span>
+            Issue Book
+        </a>
+
+
+        <a href="{{ url_for('return_book_page') }}" class="nav-link">
+            <span>↩️</span>
+            Return Book
+        </a>
+
+
+        <div class="menu-title">
+            Analytics
+        </div>
+
+
+        <a href="{{ url_for('reports') }}" class="nav-link">
+            <span>📈</span>
+            Reports
+        </a>
+
+
+        <a href="{{ url_for('logout') }}" class="nav-link logout">
+            <span>🚪</span>
+            Logout
+        </a>
+
+    </aside>
+
+
+    <!-- MAIN -->
+
+    <main class="main">
+
+        <header class="topbar">
+
+            <div class="top-actions">
+
+                <button
+                    class="menu-btn"
+                    id="menuBtn"
+                    type="button"
+                >
+                    ☰
+                </button>
+
+                <div>
+
+                    <h1>Members</h1>
+
+                    <p>
+                        Manage library members
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <button
+                class="theme-btn"
+                id="themeBtn"
+                type="button"
+            >
+                🌙
+            </button>
+
+        </header>
+
+
+        <section class="content">
+
+            <!-- FLASH -->
+
+            {% with messages = get_flashed_messages(with_categories=true) %}
+
+                {% if messages %}
+
+                    {% for category, message in messages %}
+
+                        <div class="flash flash-{{ category }}">
+                            {{ message }}
+                        </div>
+
+                    {% endfor %}
+
+                {% endif %}
+
+            {% endwith %}
+
+
+            <!-- HEADER -->
+
+            <div class="page-header">
+
+                <div>
+
+                    <h2>
+                        Library Members
+                    </h2>
+
+                    <p>
+                        Add and manage registered library members.
+                    </p>
+
+                </div>
+
+
+                <button
+                    class="add-btn"
+                    type="button"
+                    onclick="openModal()"
+                >
+                    + Add New Member
+                </button>
+
+            </div>
+
+
+            <!-- STATS -->
+
+            <div class="stats">
+
+                <div class="stat">
+
+                    <div class="stat-icon">
+                        👥
+                    </div>
+
+                    <h3>
+                        {{ members|length }}
+                    </h3>
+
+                    <p>
+                        Total Members
+                    </p>
+
+                </div>
+
+
+                <div class="stat">
+
+                    <div class="stat-icon">
+                        ✅
+                    </div>
+
+                    <h3>
+                        {{ members|length }}
+                    </h3>
+
+                    <p>
+                        Registered Members
+                    </p>
+
+                </div>
+
+
+                <div class="stat">
+
+                    <div class="stat-icon">
+                        📚
+                    </div>
+
+                    <h3>
+                        0
+                    </h3>
+
+                    <p>
+                        Active Borrowers
+                    </p>
+
+                </div>
+
+
+                <div class="stat">
+
+                    <div class="stat-icon">
+                        ⭐
+                    </div>
+
+                    <h3>
+                        Active
+                    </h3>
+
+                    <p>
+                        Member Status
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <!-- SEARCH -->
+
+            <div class="toolbar">
+
+                <div class="search-box">
+
+                    <span>🔎</span>
+
+                    <input
+                        type="text"
+                        id="searchInput"
+                        placeholder="Search name, email, phone..."
+                    >
+
+                </div>
+
+
+                <div class="result-text">
+
+                    Showing
+                    <span id="resultCount">
+                        {{ members|length }}
+                    </span>
+                    members
+
+                </div>
+
+            </div>
+
+
+            <!-- TABLE -->
+
+            <div class="table-card">
+
+                {% if members %}
+
+                    <div class="table-wrapper">
+
+                        <table id="membersTable">
+
+                            <thead>
+
+                                <tr>
+
+                                    <th>
+                                        Member
+                                    </th>
+
+                                    <th>
+                                        Member ID
+                                    </th>
+
+                                    <th>
+                                        Phone
+                                    </th>
+
+                                    <th>
+                                        Address
+                                    </th>
+
+                                    <th>
+                                        Join Date
+                                    </th>
+
+                                    <th>
+                                        Status
+                                    </th>
+
+                                    <th>
+                                        Actions
+                                    </th>
+
+                                </tr>
+
+                            </thead>
+
+
+                            <tbody>
+
+                                {% for member in members %}
+
+                                    <tr>
+
+                                        <td>
+
+                                            <div class="member-info">
+
+                                                <div class="avatar">
+
+                                                    {{ member.name[:1]|upper }}
+
+                                                </div>
+
+
+                                                <div>
+
+                                                    <div class="member-name">
+                                                        {{ member.name }}
+                                                    </div>
+
+                                                    <div class="member-email">
+
+                                                        {{ member.email or 'No email' }}
+
+                                                    </div>
+
+                                                </div>
+
+                                            </div>
+
+                                        </td>
+
+
+                                        <td>
+
+                                            <span class="badge badge-blue">
+
+                                                {{ member.memberid }}
+
+                                            </span>
+
+                                        </td>
+
+
+                                        <td>
+
+                                            {{ member.phone or '-' }}
+
+                                        </td>
+
+
+                                        <td>
+
+                                            {{ member.address or '-' }}
+
+                                        </td>
+
+
+                                        <td>
+
+                                            {{ member.join_date or '-' }}
+
+                                        </td>
+
+
+                                        <td>
+
+                                            <span class="badge badge-green">
+                                                Active
+                                            </span>
+
+                                        </td>
+
+
+                                        <td>
+
+                                            <div class="actions">
+
+                                                <button
+                                                    class="action-btn"
+                                                    type="button"
+                                                    title="Edit"
+                                                    onclick="editMember('{{ member.memberid }}')"
+                                                >
+                                                    ✏️
+                                                </button>
+
+
+                                                <button
+                                                    class="action-btn"
+                                                    type="button"
+                                                    title="Delete"
+                                                    onclick="deleteMember('{{ member.memberid }}', '{{ member.name }}')"
+                                                >
+                                                    🗑️
+                                                </button>
+
+                                            </div>
+
+                                        </td>
+
+                                    </tr>
+
+                                {% endfor %}
+
+                            </tbody>
+
+                        </table>
+
+                    </div>
+
+                {% else %}
+
+                    <div class="empty">
+
+                        <div class="empty-icon">
+                            👥
+                        </div>
+
+                        <h3>
+                            No Members Found
+                        </h3>
+
+                        <p>
+                            Add your first library member.
+                        </p>
+
+                    </div>
+
+                {% endif %}
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- ADD MEMBER MODAL -->
+
+    <div class="modal" id="memberModal">
+
+        <div class="modal-box">
+
+            <div class="modal-header">
+
+                <h3>
+                    Add New Member
+                </h3>
+
+                <button
+                    class="close"
+                    type="button"
+                    onclick="closeModal()"
+                >
+                    ✕
+                </button>
+
+            </div>
+
+
+            <form
+                method="POST"
+                action="{{ url_for('add_member') }}"
+            >
+
+                <div class="modal-body">
+
+                    <div class="form-grid">
+
+                        <div class="form-group full">
+
+                            <label>
+                                Full Name *
+                            </label>
+
+                            <input
+                                class="form-control"
+                                type="text"
+                                name="name"
+                                placeholder="Enter member name"
+                                required
+                            >
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label>
+                                Email
+                            </label>
+
+                            <input
+                                class="form-control"
+                                type="email"
+                                name="email"
+                                placeholder="member@email.com"
+                            >
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label>
+                                Phone *
+                            </label>
+
+                            <input
+                                class="form-control"
+                                type="text"
+                                name="phone"
+                                placeholder="03XXXXXXXXX"
+                                required
+                            >
+
+                        </div>
+
+
+                        <div class="form-group full">
+
+                            <label>
+                                Address
+                            </label>
+
+                            <input
+                                class="form-control"
+                                type="text"
+                                name="address"
+                                placeholder="Enter member address"
+                            >
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="modal-footer">
+
+                    <button
+                        type="button"
+                        class="cancel-btn"
+                        onclick="closeModal()"
+                    >
+                        Cancel
+                    </button>
+
+
+                    <button
+                        type="submit"
+                        class="save-btn"
+                    >
+                        Save Member
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+
+    <script>
+
+        /* ================= THEME ================= */
+
+        const themeBtn =
+            document.getElementById("themeBtn");
+
+        const savedTheme =
+            localStorage.getItem("library_theme");
+
+        if (savedTheme === "light") {
+
+            document.body.classList.add("light");
+
+            themeBtn.textContent = "☀️";
+
+        }
+
+
+        themeBtn.addEventListener(
+            "click",
+            function () {
+
+                document.body.classList.toggle("light");
+
+
+                if (
+                    document.body.classList.contains("light")
+                ) {
+
+                    localStorage.setItem(
+                        "library_theme",
+                        "light"
+                    );
+
+                    themeBtn.textContent = "☀️";
+
+                } else {
+
+                    localStorage.setItem(
+                        "library_theme",
+                        "dark"
+                    );
+
+                    themeBtn.textContent = "🌙";
+
+                }
+
+            }
+        );
+
+
+        /* ================= MOBILE MENU ================= */
+
+        const menuBtn =
+            document.getElementById("menuBtn");
+
+        const sidebar =
+            document.getElementById("sidebar");
+
+
+        menuBtn.addEventListener(
+            "click",
+            function () {
+
+                sidebar.classList.toggle("open");
+
+            }
+        );
+
+
+        /* ================= MODAL ================= */
+
+        const modal =
+            document.getElementById("memberModal");
+
+
+        function openModal() {
+
+            modal.classList.add("show");
+
+        }
+
+
+        function closeModal() {
+
+            modal.classList.remove("show");
+
+        }
+
+
+        modal.addEventListener(
+            "click",
+            function(event) {
+
+                if (event.target === modal) {
+
+                    closeModal();
+
+                }
+
+            }
+        );
+
+
+        /* ================= SEARCH ================= */
+
+        const searchInput =
+            document.getElementById("searchInput");
+
+        const table =
+            document.getElementById("membersTable");
+
+        const resultCount =
+            document.getElementById("resultCount");
+
+
+        if (searchInput && table) {
+
+            searchInput.addEventListener(
+                "input",
+                function () {
+
+                    const searchValue =
+                        searchInput.value
+                        .toLowerCase()
+                        .trim();
+
+
+                    const rows =
+                        table.querySelectorAll(
+                            "tbody tr"
+                        );
+
+
+                    let count = 0;
+
+
+                    rows.forEach(
+                        function(row) {
+
+                            const text =
+                                row.textContent
+                                .toLowerCase();
+
+
+                            if (
+                                text.includes(searchValue)
+                            ) {
+
+                                row.style.display = "";
+
+                                count++;
+
+                            } else {
+
+                                row.style.display = "none";
+
+                            }
+
+                        }
+                    );
+
+
+                    resultCount.textContent =
+                        count;
+
+                }
+            );
+
+        }
+
+
+        /* ================= EDIT ================= */
+
+        function editMember(id) {
+
+            alert(
+                "Edit member feature backend mein connect karenge.\nMember ID: "
+                + id
+            );
+
+        }
+
+
+        /* ================= DELETE ================= */
+
+        function deleteMember(id, name) {
+
+            const confirmDelete =
+                confirm(
+                    "Are you sure you want to delete this member?\n\n"
+                    + name
+                );
+
+
+            if (!confirmDelete) {
+
+                return;
+
+            }
+
+
+            window.location.href =
+                "/members/delete/" + id;
+
+        }
+
+
+        /* ================= ESC ================= */
+
+        document.addEventListener(
+            "keydown",
+            function(event) {
+
+                if (event.key === "Escape") {
+
+                    closeModal();
+
+                }
+
+            }
+        );
+
+    </script>
+
+</body>
+</html>

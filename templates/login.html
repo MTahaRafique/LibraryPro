@@ -1,0 +1,1271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>LibraryPro | Login</title>
+
+    <style>
+
+        /* =====================================================
+           ROOT VARIABLES
+        ===================================================== */
+
+        :root {
+            --bg-primary: #07111f;
+            --bg-secondary: #0d1b2a;
+            --card-bg: rgba(15, 31, 50, 0.88);
+
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+
+            --border: rgba(148, 163, 184, 0.16);
+
+            --accent: #3b82f6;
+            --accent-hover: #2563eb;
+            --accent-light: #60a5fa;
+
+            --input-bg: rgba(255, 255, 255, 0.045);
+
+            --success: #22c55e;
+            --danger: #ef4444;
+
+            --shadow:
+                0 25px 70px rgba(0, 0, 0, 0.35);
+        }
+
+        /* LIGHT THEME */
+
+        body.light-theme {
+            --bg-primary: #f1f5f9;
+            --bg-secondary: #e2e8f0;
+            --card-bg: rgba(255, 255, 255, 0.92);
+
+            --text-primary: #0f172a;
+            --text-secondary: #64748b;
+
+            --border: rgba(15, 23, 42, 0.10);
+
+            --accent: #2563eb;
+            --accent-hover: #1d4ed8;
+            --accent-light: #3b82f6;
+
+            --input-bg: rgba(15, 23, 42, 0.04);
+
+            --shadow:
+                0 25px 70px rgba(15, 23, 42, 0.14);
+        }
+
+
+        /* =====================================================
+           RESET
+        ===================================================== */
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            min-height: 100vh;
+
+            font-family:
+                Inter,
+                Poppins,
+                Arial,
+                sans-serif;
+
+            color: var(--text-primary);
+
+            background:
+                radial-gradient(
+                    circle at 10% 20%,
+                    rgba(37, 99, 235, 0.20),
+                    transparent 30%
+                ),
+                radial-gradient(
+                    circle at 90% 80%,
+                    rgba(6, 182, 212, 0.12),
+                    transparent 30%
+                ),
+                var(--bg-primary);
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            padding: 25px;
+
+            transition:
+                background 0.3s ease,
+                color 0.3s ease;
+        }
+
+
+        /* =====================================================
+           BACKGROUND DECORATIONS
+        ===================================================== */
+
+        .background-shape {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(2px);
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .shape-one {
+            width: 280px;
+            height: 280px;
+
+            top: -100px;
+            left: -80px;
+
+            background:
+                radial-gradient(
+                    circle,
+                    rgba(59, 130, 246, 0.25),
+                    transparent 70%
+                );
+        }
+
+        .shape-two {
+            width: 320px;
+            height: 320px;
+
+            right: -120px;
+            bottom: -120px;
+
+            background:
+                radial-gradient(
+                    circle,
+                    rgba(6, 182, 212, 0.18),
+                    transparent 70%
+                );
+        }
+
+
+        /* =====================================================
+           MAIN CONTAINER
+        ===================================================== */
+
+        .login-wrapper {
+            width: 100%;
+            max-width: 1050px;
+
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+
+            background: var(--card-bg);
+
+            border: 1px solid var(--border);
+
+            border-radius: 28px;
+
+            overflow: hidden;
+
+            box-shadow: var(--shadow);
+
+            backdrop-filter: blur(20px);
+
+            animation: containerAppear 0.7s ease;
+        }
+
+
+        @keyframes containerAppear {
+
+            from {
+                opacity: 0;
+                transform: translateY(20px) scale(0.98);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+
+        }
+
+
+        /* =====================================================
+           LEFT BRAND AREA
+        ===================================================== */
+
+        .brand-section {
+            position: relative;
+
+            min-height: 620px;
+
+            padding: 55px;
+
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+
+            overflow: hidden;
+
+            background:
+                linear-gradient(
+                    145deg,
+                    rgba(37, 99, 235, 0.95),
+                    rgba(15, 23, 42, 0.98)
+                );
+        }
+
+        .brand-section::before {
+            content: "";
+
+            position: absolute;
+
+            width: 300px;
+            height: 300px;
+
+            border-radius: 50%;
+
+            top: -120px;
+            right: -120px;
+
+            border: 1px solid rgba(255,255,255,0.10);
+
+            box-shadow:
+                0 0 0 40px rgba(255,255,255,0.025),
+                0 0 0 80px rgba(255,255,255,0.018);
+        }
+
+        .brand-section::after {
+            content: "";
+
+            position: absolute;
+
+            width: 220px;
+            height: 220px;
+
+            border-radius: 50%;
+
+            bottom: -100px;
+            left: -90px;
+
+            background:
+                rgba(6, 182, 212, 0.10);
+        }
+
+
+        /* =====================================================
+           BRAND
+        ===================================================== */
+
+        .brand {
+            position: relative;
+            z-index: 2;
+
+            display: flex;
+            align-items: center;
+
+            gap: 14px;
+        }
+
+        .brand-icon {
+            width: 52px;
+            height: 52px;
+
+            border-radius: 15px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 25px;
+
+            background:
+                rgba(255,255,255,0.15);
+
+            border:
+                1px solid rgba(255,255,255,0.18);
+
+            backdrop-filter: blur(10px);
+        }
+
+        .brand-name {
+            font-size: 22px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+        }
+
+        .brand-subtitle {
+            font-size: 12px;
+            color: rgba(255,255,255,0.65);
+            margin-top: 2px;
+        }
+
+
+        /* =====================================================
+           HERO TEXT
+        ===================================================== */
+
+        .brand-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .brand-content h1 {
+            font-size: clamp(38px, 5vw, 58px);
+
+            line-height: 1.05;
+
+            letter-spacing: -2px;
+
+            margin-bottom: 22px;
+        }
+
+        .brand-content h1 span {
+            color: #93c5fd;
+        }
+
+        .brand-content p {
+            max-width: 420px;
+
+            color: rgba(255,255,255,0.72);
+
+            font-size: 15px;
+
+            line-height: 1.8;
+        }
+
+
+        /* =====================================================
+           FEATURES
+        ===================================================== */
+
+        .feature-list {
+            position: relative;
+            z-index: 2;
+
+            display: grid;
+
+            gap: 13px;
+
+            margin-top: 30px;
+        }
+
+        .feature {
+            display: flex;
+            align-items: center;
+
+            gap: 12px;
+
+            font-size: 13px;
+
+            color: rgba(255,255,255,0.82);
+        }
+
+        .feature-icon {
+            width: 30px;
+            height: 30px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 9px;
+
+            background:
+                rgba(255,255,255,0.12);
+        }
+
+
+        /* =====================================================
+           RIGHT LOGIN AREA
+        ===================================================== */
+
+        .login-section {
+            position: relative;
+
+            padding: 55px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+
+        /* =====================================================
+           THEME BUTTON
+        ===================================================== */
+
+        .theme-toggle {
+            position: absolute;
+
+            top: 25px;
+            right: 25px;
+
+            width: 44px;
+            height: 44px;
+
+            border-radius: 13px;
+
+            border: 1px solid var(--border);
+
+            background: var(--input-bg);
+
+            color: var(--text-primary);
+
+            cursor: pointer;
+
+            font-size: 18px;
+
+            transition:
+                transform 0.2s ease,
+                background 0.2s ease;
+        }
+
+        .theme-toggle:hover {
+            transform: translateY(-2px);
+        }
+
+
+        /* =====================================================
+           LOGIN FORM
+        ===================================================== */
+
+        .login-content {
+            width: 100%;
+            max-width: 390px;
+        }
+
+        .login-header {
+            margin-bottom: 32px;
+        }
+
+        .login-header .eyebrow {
+            color: var(--accent-light);
+
+            font-size: 12px;
+
+            font-weight: 700;
+
+            text-transform: uppercase;
+
+            letter-spacing: 1.5px;
+
+            margin-bottom: 10px;
+        }
+
+        .login-header h2 {
+            font-size: 32px;
+
+            letter-spacing: -1px;
+
+            margin-bottom: 9px;
+        }
+
+        .login-header p {
+            color: var(--text-secondary);
+
+            font-size: 14px;
+
+            line-height: 1.6;
+        }
+
+
+        /* =====================================================
+           FLASH MESSAGE
+        ===================================================== */
+
+        .flash-container {
+            margin-bottom: 20px;
+        }
+
+        .flash {
+            padding: 12px 14px;
+
+            border-radius: 12px;
+
+            font-size: 13px;
+
+            border: 1px solid transparent;
+        }
+
+        .flash-success {
+            color: var(--success);
+            background: rgba(34,197,94,0.08);
+            border-color: rgba(34,197,94,0.18);
+        }
+
+        .flash-danger {
+            color: var(--danger);
+            background: rgba(239,68,68,0.08);
+            border-color: rgba(239,68,68,0.18);
+        }
+
+        .flash-warning {
+            color: #f59e0b;
+            background: rgba(245,158,11,0.08);
+            border-color: rgba(245,158,11,0.18);
+        }
+
+
+        /* =====================================================
+           FORM GROUP
+        ===================================================== */
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+
+            margin-bottom: 8px;
+
+            font-size: 13px;
+
+            font-weight: 600;
+        }
+
+        .input-wrapper {
+            position: relative;
+        }
+
+        .input-icon {
+            position: absolute;
+
+            left: 15px;
+            top: 50%;
+
+            transform: translateY(-50%);
+
+            color: var(--text-secondary);
+
+            font-size: 16px;
+
+            pointer-events: none;
+        }
+
+        .form-input {
+            width: 100%;
+
+            height: 52px;
+
+            padding:
+                0 45px 0 45px;
+
+            border-radius: 13px;
+
+            border:
+                1px solid var(--border);
+
+            outline: none;
+
+            color: var(--text-primary);
+
+            background: var(--input-bg);
+
+            font-size: 14px;
+
+            transition:
+                border 0.2s ease,
+                box-shadow 0.2s ease,
+                background 0.2s ease;
+        }
+
+        .form-input::placeholder {
+            color: var(--text-secondary);
+        }
+
+        .form-input:focus {
+            border-color: var(--accent);
+
+            box-shadow:
+                0 0 0 4px rgba(59,130,246,0.10);
+        }
+
+
+        /* =====================================================
+           PASSWORD TOGGLE
+        ===================================================== */
+
+        .password-toggle {
+            position: absolute;
+
+            right: 14px;
+            top: 50%;
+
+            transform: translateY(-50%);
+
+            border: none;
+
+            background: transparent;
+
+            color: var(--text-secondary);
+
+            cursor: pointer;
+
+            font-size: 16px;
+        }
+
+        .password-toggle:hover {
+            color: var(--accent-light);
+        }
+
+
+        /* =====================================================
+           REMEMBER / FORGOT
+        ===================================================== */
+
+        .form-options {
+            display: flex;
+
+            align-items: center;
+            justify-content: space-between;
+
+            margin: 5px 0 25px;
+        }
+
+        .remember {
+            display: flex;
+            align-items: center;
+
+            gap: 8px;
+
+            color: var(--text-secondary);
+
+            font-size: 12px;
+
+            cursor: pointer;
+        }
+
+        .remember input {
+            accent-color: var(--accent);
+
+            width: 15px;
+            height: 15px;
+        }
+
+        .forgot {
+            color: var(--accent-light);
+
+            font-size: 12px;
+
+            text-decoration: none;
+        }
+
+
+        /* =====================================================
+           LOGIN BUTTON
+        ===================================================== */
+
+        .login-button {
+            width: 100%;
+
+            height: 52px;
+
+            border: none;
+
+            border-radius: 13px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    var(--accent),
+                    #06b6d4
+                );
+
+            color: white;
+
+            font-size: 14px;
+
+            font-weight: 700;
+
+            cursor: pointer;
+
+            box-shadow:
+                0 12px 25px rgba(37,99,235,0.22);
+
+            transition:
+                transform 0.2s ease,
+                box-shadow 0.2s ease;
+        }
+
+        .login-button:hover {
+            transform: translateY(-2px);
+
+            box-shadow:
+                0 16px 30px rgba(37,99,235,0.30);
+        }
+
+        .login-button:active {
+            transform: translateY(0);
+        }
+
+
+        /* =====================================================
+           FOOTER
+        ===================================================== */
+
+        .login-footer {
+            text-align: center;
+
+            margin-top: 25px;
+
+            color: var(--text-secondary);
+
+            font-size: 11px;
+
+            line-height: 1.6;
+        }
+
+        .login-footer strong {
+            color: var(--text-primary);
+        }
+
+
+        /* =====================================================
+           RESPONSIVE
+        ===================================================== */
+
+        @media (max-width: 850px) {
+
+            .login-wrapper {
+                grid-template-columns: 1fr;
+                max-width: 550px;
+            }
+
+            .brand-section {
+                min-height: auto;
+                padding: 40px;
+            }
+
+            .brand-content {
+                margin-top: 55px;
+            }
+
+            .feature-list {
+                display: none;
+            }
+
+            .login-section {
+                padding: 45px 40px;
+            }
+
+        }
+
+
+        @media (max-width: 500px) {
+
+            body {
+                padding: 12px;
+            }
+
+            .login-wrapper {
+                border-radius: 22px;
+            }
+
+            .brand-section {
+                padding: 30px;
+            }
+
+            .brand-content h1 {
+                font-size: 38px;
+            }
+
+            .login-section {
+                padding: 45px 25px 30px;
+            }
+
+            .theme-toggle {
+                top: 18px;
+                right: 18px;
+            }
+
+        }
+
+    </style>
+</head>
+
+<body>
+
+    <!-- =====================================================
+         BACKGROUND
+    ====================================================== -->
+
+    <div class="background-shape shape-one"></div>
+    <div class="background-shape shape-two"></div>
+
+
+    <!-- =====================================================
+         MAIN LOGIN CARD
+    ====================================================== -->
+
+    <main class="login-wrapper">
+
+
+        <!-- =================================================
+             BRAND SECTION
+        ================================================== -->
+
+        <section class="brand-section">
+
+            <div class="brand">
+
+                <div class="brand-icon">
+                    📚
+                </div>
+
+                <div>
+                    <div class="brand-name">
+                        LibraryPro
+                    </div>
+
+                    <div class="brand-subtitle">
+                        Smart Library Platform
+                    </div>
+                </div>
+
+            </div>
+
+
+            <div class="brand-content">
+
+                <h1>
+                    Manage your
+                    <span>library</span>
+                    smarter.
+                </h1>
+
+                <p>
+                    A modern library platform designed to help
+                    you manage books, members, borrowing,
+                    returns and reports from one powerful
+                    dashboard.
+                </p>
+
+
+                <div class="feature-list">
+
+                    <div class="feature">
+                        <span class="feature-icon">📚</span>
+                        <span>Complete book management</span>
+                    </div>
+
+                    <div class="feature">
+                        <span class="feature-icon">👥</span>
+                        <span>Member management</span>
+                    </div>
+
+                    <div class="feature">
+                        <span class="feature-icon">↗</span>
+                        <span>Issue and return tracking</span>
+                    </div>
+
+                    <div class="feature">
+                        <span class="feature-icon">📊</span>
+                        <span>Powerful library reports</span>
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div style="
+                position:relative;
+                z-index:2;
+                color:rgba(255,255,255,0.5);
+                font-size:11px;
+            ">
+                © 2026 LibraryPro · Library Management System
+            </div>
+
+        </section>
+
+
+
+        <!-- =================================================
+             LOGIN SECTION
+        ================================================== -->
+
+        <section class="login-section">
+
+
+            <!-- Theme Toggle -->
+
+            <button
+                type="button"
+                class="theme-toggle"
+                id="themeToggle"
+                aria-label="Toggle theme"
+                title="Toggle dark/light theme"
+            >
+                🌙
+            </button>
+
+
+            <div class="login-content">
+
+
+                <!-- Header -->
+
+                <div class="login-header">
+
+                    <div class="eyebrow">
+                        Welcome Back
+                    </div>
+
+                    <h2>
+                        Sign in
+                    </h2>
+
+                    <p>
+                        Enter your credentials to access
+                        your library dashboard.
+                    </p>
+
+                </div>
+
+
+                <!-- Flask Flash Messages -->
+
+                {% with messages = get_flashed_messages(with_categories=true) %}
+
+                    {% if messages %}
+
+                        <div class="flash-container">
+
+                            {% for category, message in messages %}
+
+                                <div class="flash flash-{{ category }}">
+                                    {{ message }}
+                                </div>
+
+                            {% endfor %}
+
+                        </div>
+
+                    {% endif %}
+
+                {% endwith %}
+
+
+                <!-- Login Form -->
+
+                <form
+                    method="POST"
+                    action="{{ url_for('login') }}"
+                    id="loginForm"
+                >
+
+
+                    <!-- Username -->
+
+                    <div class="form-group">
+
+                        <label
+                            class="form-label"
+                            for="username"
+                        >
+                            Username
+                        </label>
+
+                        <div class="input-wrapper">
+
+                            <span class="input-icon">
+                                👤
+                            </span>
+
+                            <input
+                                type="text"
+                                id="username"
+                                name="username"
+                                class="form-input"
+                                placeholder="Enter your username"
+                                autocomplete="username"
+                                required
+                            >
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- Password -->
+
+                    <div class="form-group">
+
+                        <label
+                            class="form-label"
+                            for="password"
+                        >
+                            Password
+                        </label>
+
+                        <div class="input-wrapper">
+
+                            <span class="input-icon">
+                                🔒
+                            </span>
+
+                            <input
+                                type="password"
+                                id="password"
+                                name="password"
+                                class="form-input"
+                                placeholder="Enter your password"
+                                autocomplete="current-password"
+                                required
+                            >
+
+                            <button
+                                type="button"
+                                class="password-toggle"
+                                id="passwordToggle"
+                                aria-label="Show password"
+                            >
+                                👁
+                            </button>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- Options -->
+
+                    <div class="form-options">
+
+                        <label class="remember">
+
+                            <input
+                                type="checkbox"
+                                name="remember"
+                            >
+
+                            Remember me
+
+                        </label>
+
+                        <a
+                            href="#"
+                            class="forgot"
+                            onclick="showForgotMessage(event)"
+                        >
+                            Forgot password?
+                        </a>
+
+                    </div>
+
+
+                    <!-- Submit -->
+
+                    <button
+                        type="submit"
+                        class="login-button"
+                        id="loginButton"
+                    >
+                        Sign In
+                    </button>
+
+                </form>
+
+
+                <!-- Footer -->
+
+                <div class="login-footer">
+
+                    Secure access to
+                    <strong>LibraryPro</strong>
+
+                    <br>
+
+                    Library Management System
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- =====================================================
+         JAVASCRIPT
+    ====================================================== -->
+
+    <script>
+
+        // =====================================================
+        // THEME
+        // =====================================================
+
+        const themeToggle =
+            document.getElementById("themeToggle");
+
+        const savedTheme =
+            localStorage.getItem("librarypro-theme");
+
+
+        function applyTheme(theme) {
+
+            if (theme === "light") {
+
+                document.body.classList.add("light-theme");
+
+                themeToggle.textContent = "☀️";
+
+                themeToggle.title =
+                    "Switch to dark theme";
+
+            } else {
+
+                document.body.classList.remove("light-theme");
+
+                themeToggle.textContent = "🌙";
+
+                themeToggle.title =
+                    "Switch to light theme";
+            }
+        }
+
+
+        if (savedTheme) {
+
+            applyTheme(savedTheme);
+
+        } else {
+
+            applyTheme("dark");
+
+        }
+
+
+        themeToggle.addEventListener("click", function () {
+
+            const isLight =
+                document.body.classList.contains("light-theme");
+
+            const newTheme =
+                isLight ? "dark" : "light";
+
+            localStorage.setItem(
+                "librarypro-theme",
+                newTheme
+            );
+
+            applyTheme(newTheme);
+
+        });
+
+
+        // =====================================================
+        // PASSWORD SHOW / HIDE
+        // =====================================================
+
+        const passwordInput =
+            document.getElementById("password");
+
+        const passwordToggle =
+            document.getElementById("passwordToggle");
+
+
+        passwordToggle.addEventListener("click", function () {
+
+            if (passwordInput.type === "password") {
+
+                passwordInput.type = "text";
+
+                passwordToggle.textContent = "🙈";
+
+                passwordToggle.setAttribute(
+                    "aria-label",
+                    "Hide password"
+                );
+
+            } else {
+
+                passwordInput.type = "password";
+
+                passwordToggle.textContent = "👁";
+
+                passwordToggle.setAttribute(
+                    "aria-label",
+                    "Show password"
+                );
+            }
+
+        });
+
+
+        // =====================================================
+        // LOGIN BUTTON LOADING
+        // =====================================================
+
+        const loginForm =
+            document.getElementById("loginForm");
+
+        const loginButton =
+            document.getElementById("loginButton");
+
+
+        loginForm.addEventListener("submit", function () {
+
+            loginButton.disabled = true;
+
+            loginButton.innerHTML =
+                "Signing in...";
+
+        });
+
+
+        // =====================================================
+        // FORGOT PASSWORD
+        // =====================================================
+
+        function showForgotMessage(event) {
+
+            event.preventDefault();
+
+            alert(
+                "Please contact your library administrator to reset your password."
+            );
+
+        }
+
+
+        // =====================================================
+        // AUTO HIDE FLASH MESSAGES
+        // =====================================================
+
+        setTimeout(function () {
+
+            const messages =
+                document.querySelectorAll(".flash");
+
+            messages.forEach(function (message) {
+
+                message.style.transition =
+                    "opacity 0.5s ease";
+
+                message.style.opacity = "0";
+
+                setTimeout(function () {
+                    message.remove();
+                }, 500);
+
+            });
+
+        }, 5000);
+
+    </script>
+
+</body>
+</html>

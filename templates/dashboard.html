@@ -1,0 +1,2130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>LibraryPro | Dashboard</title>
+
+    <style>
+        :root {
+            --bg: #07111f;
+            --sidebar: #0a1626;
+            --card: #0d1b2a;
+            --card-hover: #11243a;
+
+            --text: #f8fafc;
+            --muted: #94a3b8;
+
+            --border: rgba(148, 163, 184, 0.13);
+
+            --primary: #3b82f6;
+            --primary-dark: #2563eb;
+            --cyan: #06b6d4;
+
+            --green: #22c55e;
+            --orange: #f59e0b;
+            --red: #ef4444;
+            --purple: #8b5cf6;
+
+            --input: rgba(255,255,255,0.04);
+
+            --shadow: 0 15px 45px rgba(0,0,0,0.18);
+        }
+
+        body.light-theme {
+            --bg: #f1f5f9;
+            --sidebar: #ffffff;
+            --card: #ffffff;
+            --card-hover: #f8fafc;
+
+            --text: #0f172a;
+            --muted: #64748b;
+
+            --border: rgba(15,23,42,0.09);
+
+            --input: #f8fafc;
+
+            --shadow: 0 15px 45px rgba(15,23,42,0.08);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            font-family: Inter, Poppins, Arial, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+
+            transition:
+                background 0.3s ease,
+                color 0.3s ease;
+        }
+
+        button,
+        input {
+            font-family: inherit;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        /* =========================
+           APP
+        ========================= */
+
+        .app {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* =========================
+           SIDEBAR
+        ========================= */
+
+        .sidebar {
+            width: 260px;
+
+            position: fixed;
+
+            top: 0;
+            left: 0;
+            bottom: 0;
+
+            z-index: 100;
+
+            background: var(--sidebar);
+
+            border-right: 1px solid var(--border);
+
+            display: flex;
+            flex-direction: column;
+
+            transition:
+                transform 0.3s ease,
+                background 0.3s ease;
+        }
+
+        .sidebar-brand {
+            height: 82px;
+
+            display: flex;
+            align-items: center;
+
+            padding: 0 24px;
+
+            border-bottom: 1px solid var(--border);
+        }
+
+        .brand-icon {
+            width: 42px;
+            height: 42px;
+
+            border-radius: 12px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    var(--primary),
+                    var(--cyan)
+                );
+
+            font-size: 20px;
+
+            margin-right: 11px;
+
+            box-shadow:
+                0 8px 20px rgba(37,99,235,0.20);
+        }
+
+        .brand-title {
+            font-size: 18px;
+            font-weight: 800;
+        }
+
+        .brand-subtitle {
+            color: var(--muted);
+
+            font-size: 9px;
+
+            margin-top: 2px;
+
+            letter-spacing: 0.7px;
+
+            text-transform: uppercase;
+        }
+
+        .nav {
+            flex: 1;
+
+            padding: 22px 14px;
+
+            overflow-y: auto;
+        }
+
+        .nav-label {
+            padding: 0 12px;
+
+            margin: 8px 0 10px;
+
+            color: var(--muted);
+
+            font-size: 10px;
+
+            font-weight: 700;
+
+            text-transform: uppercase;
+
+            letter-spacing: 1.3px;
+        }
+
+        .nav-item {
+            display: flex;
+
+            align-items: center;
+
+            gap: 13px;
+
+            width: 100%;
+
+            padding: 12px 13px;
+
+            margin-bottom: 5px;
+
+            border-radius: 11px;
+
+            color: var(--muted);
+
+            font-size: 13px;
+
+            font-weight: 600;
+
+            transition:
+                background 0.2s ease,
+                color 0.2s ease,
+                transform 0.2s ease;
+        }
+
+        .nav-item:hover {
+            background: var(--input);
+
+            color: var(--text);
+
+            transform: translateX(2px);
+        }
+
+        .nav-item.active {
+            background:
+                linear-gradient(
+                    90deg,
+                    rgba(59,130,246,0.17),
+                    rgba(6,182,212,0.06)
+                );
+
+            color: var(--primary);
+
+            border:
+                1px solid rgba(59,130,246,0.10);
+        }
+
+        .nav-icon {
+            width: 22px;
+
+            text-align: center;
+
+            font-size: 16px;
+        }
+
+        /* =========================
+           SIDEBAR FOOTER
+        ========================= */
+
+        .sidebar-footer {
+            padding: 15px;
+
+            border-top: 1px solid var(--border);
+        }
+
+        .user-mini {
+            display: flex;
+
+            align-items: center;
+
+            gap: 10px;
+
+            padding: 10px;
+
+            border-radius: 12px;
+
+            background: var(--input);
+        }
+
+        .avatar {
+            width: 36px;
+            height: 36px;
+
+            flex-shrink: 0;
+
+            border-radius: 10px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    var(--primary),
+                    var(--cyan)
+                );
+
+            color: white;
+
+            font-size: 13px;
+
+            font-weight: 800;
+        }
+
+        .user-info {
+            min-width: 0;
+        }
+
+        .user-name {
+            font-size: 12px;
+
+            font-weight: 700;
+
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .user-role {
+            color: var(--muted);
+
+            font-size: 10px;
+
+            margin-top: 2px;
+
+            text-transform: capitalize;
+        }
+
+        /* =========================
+           MAIN
+        ========================= */
+
+        .main {
+            width: calc(100% - 260px);
+
+            margin-left: 260px;
+
+            min-height: 100vh;
+        }
+
+        /* =========================
+           TOPBAR
+        ========================= */
+
+        .topbar {
+            height: 82px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            padding: 0 32px;
+
+            border-bottom: 1px solid var(--border);
+
+            background: var(--bg);
+
+            position: sticky;
+
+            top: 0;
+
+            z-index: 50;
+
+            backdrop-filter: blur(15px);
+        }
+
+        .topbar-left {
+            display: flex;
+
+            align-items: center;
+
+            gap: 15px;
+        }
+
+        .page-title {
+            font-size: 21px;
+
+            font-weight: 800;
+
+            letter-spacing: -0.5px;
+        }
+
+        .page-subtitle {
+            color: var(--muted);
+
+            font-size: 11px;
+
+            margin-top: 3px;
+        }
+
+        .topbar-actions {
+            display: flex;
+
+            align-items: center;
+
+            gap: 10px;
+        }
+
+        /* =========================
+           SEARCH
+        ========================= */
+
+        .search-box {
+            position: relative;
+        }
+
+        .search-box input {
+            width: 220px;
+
+            height: 40px;
+
+            padding: 0 14px 0 38px;
+
+            border: 1px solid var(--border);
+
+            border-radius: 11px;
+
+            outline: none;
+
+            background: var(--input);
+
+            color: var(--text);
+
+            font-size: 12px;
+        }
+
+        .search-box input::placeholder {
+            color: var(--muted);
+        }
+
+        .search-icon {
+            position: absolute;
+
+            left: 13px;
+
+            top: 50%;
+
+            transform: translateY(-50%);
+
+            color: var(--muted);
+
+            font-size: 14px;
+        }
+
+        /* =========================
+           BUTTON
+        ========================= */
+
+        .icon-button {
+            width: 40px;
+            height: 40px;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            border: 1px solid var(--border);
+
+            border-radius: 11px;
+
+            background: var(--input);
+
+            color: var(--text);
+
+            cursor: pointer;
+
+            transition:
+                transform 0.2s ease,
+                background 0.2s ease;
+        }
+
+        .icon-button:hover {
+            transform: translateY(-2px);
+        }
+
+        .menu-button {
+            display: none;
+        }
+
+        /* =========================
+           CONTENT
+        ========================= */
+
+        .content {
+            padding: 32px;
+        }
+
+        /* =========================
+           FLASH
+        ========================= */
+
+        .flash-container {
+            margin-bottom: 20px;
+        }
+
+        .flash {
+            padding: 12px 15px;
+
+            border-radius: 11px;
+
+            font-size: 12px;
+
+            margin-bottom: 8px;
+        }
+
+        .flash-success {
+            color: var(--green);
+
+            background: rgba(34,197,94,0.08);
+
+            border:
+                1px solid rgba(34,197,94,0.15);
+        }
+
+        .flash-danger {
+            color: var(--red);
+
+            background: rgba(239,68,68,0.08);
+
+            border:
+                1px solid rgba(239,68,68,0.15);
+        }
+
+        .flash-warning {
+            color: var(--orange);
+
+            background: rgba(245,158,11,0.08);
+
+            border:
+                1px solid rgba(245,158,11,0.15);
+        }
+
+        .flash-info {
+            color: var(--primary);
+
+            background: rgba(59,130,246,0.08);
+
+            border:
+                1px solid rgba(59,130,246,0.15);
+        }
+
+        /* =========================
+           WELCOME
+        ========================= */
+
+        .welcome {
+            position: relative;
+
+            overflow: hidden;
+
+            padding: 28px 30px;
+
+            border-radius: 18px;
+
+            background:
+                linear-gradient(
+                    120deg,
+                    #1d4ed8,
+                    #2563eb 55%,
+                    #0891b2
+                );
+
+            color: white;
+
+            margin-bottom: 25px;
+
+            box-shadow:
+                0 15px 35px rgba(37,99,235,0.16);
+        }
+
+        .welcome::after {
+            content: "";
+
+            position: absolute;
+
+            width: 240px;
+            height: 240px;
+
+            border-radius: 50%;
+
+            right: -70px;
+            top: -120px;
+
+            border:
+                1px solid rgba(255,255,255,0.14);
+
+            box-shadow:
+                0 0 0 40px rgba(255,255,255,0.03),
+                0 0 0 80px rgba(255,255,255,0.025);
+        }
+
+        .welcome h2 {
+            font-size: 24px;
+
+            margin-bottom: 7px;
+
+            position: relative;
+
+            z-index: 2;
+        }
+
+        .welcome p {
+            font-size: 12px;
+
+            color: rgba(255,255,255,0.72);
+
+            position: relative;
+
+            z-index: 2;
+        }
+
+        /* =========================
+           STATISTICS
+        ========================= */
+
+        .stats-grid {
+            display: grid;
+
+            grid-template-columns:
+                repeat(4, 1fr);
+
+            gap: 17px;
+
+            margin-bottom: 25px;
+        }
+
+        .stat-card {
+            position: relative;
+
+            padding: 20px;
+
+            background: var(--card);
+
+            border: 1px solid var(--border);
+
+            border-radius: 16px;
+
+            box-shadow: var(--shadow);
+
+            transition:
+                transform 0.2s ease,
+                border 0.2s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-3px);
+
+            border-color:
+                rgba(59,130,246,0.25);
+        }
+
+        .stat-top {
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: flex-start;
+        }
+
+        .stat-icon {
+            width: 42px;
+            height: 42px;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 12px;
+
+            font-size: 18px;
+        }
+
+        .blue {
+            background: rgba(59,130,246,0.12);
+        }
+
+        .green {
+            background: rgba(34,197,94,0.12);
+        }
+
+        .orange {
+            background: rgba(245,158,11,0.12);
+        }
+
+        .red {
+            background: rgba(239,68,68,0.12);
+        }
+
+        .stat-label {
+            color: var(--muted);
+
+            font-size: 11px;
+
+            margin-top: 17px;
+        }
+
+        .stat-value {
+            font-size: 27px;
+
+            font-weight: 800;
+
+            margin-top: 4px;
+        }
+
+        .stat-description {
+            color: var(--muted);
+
+            font-size: 10px;
+
+            margin-top: 4px;
+        }
+
+        /* =========================
+           DASHBOARD GRID
+        ========================= */
+
+        .dashboard-grid {
+            display: grid;
+
+            grid-template-columns:
+                minmax(0, 1fr)
+                300px;
+
+            gap: 20px;
+        }
+
+        /* =========================
+           PANEL
+        ========================= */
+
+        .panel {
+            background: var(--card);
+
+            border: 1px solid var(--border);
+
+            border-radius: 17px;
+
+            box-shadow: var(--shadow);
+
+            overflow: hidden;
+        }
+
+        .panel-header {
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            padding: 20px 21px;
+
+            border-bottom: 1px solid var(--border);
+        }
+
+        .panel-title {
+            font-size: 14px;
+
+            font-weight: 800;
+        }
+
+        .panel-subtitle {
+            color: var(--muted);
+
+            font-size: 10px;
+
+            margin-top: 4px;
+        }
+
+        .view-all {
+            color: var(--primary);
+
+            font-size: 11px;
+
+            font-weight: 700;
+        }
+
+        .view-all:hover {
+            text-decoration: underline;
+        }
+
+        /* =========================
+           TABLE
+        ========================= */
+
+        .table-container {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+
+            border-collapse: collapse;
+
+            min-width: 620px;
+        }
+
+        th {
+            padding: 12px 20px;
+
+            text-align: left;
+
+            color: var(--muted);
+
+            font-size: 9px;
+
+            font-weight: 700;
+
+            text-transform: uppercase;
+
+            letter-spacing: 0.7px;
+
+            background: var(--input);
+        }
+
+        td {
+            padding: 14px 20px;
+
+            border-top: 1px solid var(--border);
+
+            font-size: 11px;
+        }
+
+        tr:hover td {
+            background: rgba(59,130,246,0.025);
+        }
+
+        .book-name {
+            font-weight: 700;
+        }
+
+        .member-name {
+            color: var(--muted);
+        }
+
+        /* =========================
+           STATUS
+        ========================= */
+
+        .status {
+            display: inline-flex;
+
+            align-items: center;
+
+            gap: 5px;
+
+            padding: 5px 8px;
+
+            border-radius: 20px;
+
+            font-size: 9px;
+
+            font-weight: 700;
+        }
+
+        .status::before {
+            content: "";
+
+            width: 5px;
+            height: 5px;
+
+            border-radius: 50%;
+
+            background: currentColor;
+        }
+
+        .status-issued {
+            color: var(--orange);
+
+            background:
+                rgba(245,158,11,0.10);
+        }
+
+        .status-returned {
+            color: var(--green);
+
+            background:
+                rgba(34,197,94,0.10);
+        }
+
+        /* =========================
+           QUICK ACTIONS
+        ========================= */
+
+        .quick-actions {
+            padding: 16px;
+        }
+
+        .action {
+            display: flex;
+
+            align-items: center;
+
+            gap: 12px;
+
+            padding: 13px;
+
+            border-radius: 12px;
+
+            margin-bottom: 8px;
+
+            background: var(--input);
+
+            border: 1px solid transparent;
+
+            transition:
+                background 0.2s ease,
+                border 0.2s ease,
+                transform 0.2s ease;
+        }
+
+        .action:last-child {
+            margin-bottom: 0;
+        }
+
+        .action:hover {
+            border-color:
+                rgba(59,130,246,0.18);
+
+            transform: translateX(2px);
+
+            background:
+                rgba(59,130,246,0.07);
+        }
+
+        .action-icon {
+            width: 38px;
+            height: 38px;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 10px;
+
+            background:
+                rgba(59,130,246,0.10);
+
+            font-size: 16px;
+        }
+
+        .action-title {
+            font-size: 11px;
+
+            font-weight: 700;
+        }
+
+        .action-description {
+            color: var(--muted);
+
+            font-size: 9px;
+
+            margin-top: 3px;
+        }
+
+        /* =========================
+           OVERDUE
+        ========================= */
+
+        .overdue-card {
+            margin: 16px 0 0;
+
+            padding: 16px;
+
+            border-radius: 13px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(239,68,68,0.10),
+                    rgba(245,158,11,0.06)
+                );
+
+            border:
+                1px solid rgba(239,68,68,0.13);
+        }
+
+        .overdue-title {
+            color: var(--red);
+
+            font-size: 11px;
+
+            font-weight: 800;
+        }
+
+        .overdue-text {
+            color: var(--muted);
+
+            font-size: 9px;
+
+            line-height: 1.6;
+
+            margin-top: 5px;
+        }
+
+        /* =========================
+           EMPTY
+        ========================= */
+
+        .empty-state {
+            text-align: center;
+
+            color: var(--muted);
+
+            padding: 35px !important;
+        }
+
+        .empty-icon {
+            font-size: 28px;
+
+            margin-bottom: 8px;
+        }
+
+        /* =========================
+           MOBILE
+        ========================= */
+
+        .overlay {
+            display: none;
+
+            position: fixed;
+
+            inset: 0;
+
+            background:
+                rgba(0,0,0,0.45);
+
+            z-index: 90;
+        }
+
+        /* =========================
+           RESPONSIVE
+        ========================= */
+
+        @media (max-width: 1150px) {
+
+            .stats-grid {
+                grid-template-columns:
+                    repeat(2, 1fr);
+            }
+
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+        @media (max-width: 850px) {
+
+            .sidebar {
+                transform:
+                    translateX(-100%);
+            }
+
+            .sidebar.open {
+                transform:
+                    translateX(0);
+            }
+
+            .overlay.active {
+                display: block;
+            }
+
+            .main {
+                width: 100%;
+
+                margin-left: 0;
+            }
+
+            .menu-button {
+                display: flex;
+            }
+
+            .search-box {
+                display: none;
+            }
+
+            .topbar {
+                padding: 0 18px;
+            }
+
+            .content {
+                padding: 20px;
+            }
+
+        }
+
+        @media (max-width: 550px) {
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .welcome {
+                padding: 23px;
+            }
+
+            .welcome h2 {
+                font-size: 20px;
+            }
+
+            .topbar {
+                height: 70px;
+            }
+
+            .page-title {
+                font-size: 17px;
+            }
+
+            .page-subtitle {
+                font-size: 9px;
+            }
+
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="app">
+
+    <!-- =====================================================
+         SIDEBAR
+    ====================================================== -->
+
+    <aside class="sidebar" id="sidebar">
+
+        <div class="sidebar-brand">
+
+            <div class="brand-icon">
+                📚
+            </div>
+
+            <div>
+                <div class="brand-title">
+                    LibraryPro
+                </div>
+
+                <div class="brand-subtitle">
+                    Smart Library Platform
+                </div>
+            </div>
+
+        </div>
+
+
+        <!-- NAVIGATION -->
+
+        <nav class="nav">
+
+            <div class="nav-label">
+                Main Menu
+            </div>
+
+
+            <!-- DASHBOARD -->
+
+            <a
+                href="{{ url_for('dashboard') }}"
+                class="nav-item"
+            >
+                <span class="nav-icon">📊</span>
+                Dashboard
+            </a>
+
+
+            <!-- BOOKS -->
+
+            <a
+                href="{{ url_for('books') }}"
+                class="nav-item"
+            >
+                <span class="nav-icon">📚</span>
+                Books
+            </a>
+
+
+            <!-- MEMBERS
+                 IMPORTANT:
+                 Endpoint is members
+            -->
+
+            <a
+                href="{{ url_for('members') }}"
+                class="nav-item"
+            >
+                <span class="nav-icon">👥</span>
+                Members
+            </a>
+
+
+            <div class="nav-label">
+                Circulation
+            </div>
+
+
+            <!-- ISSUE -->
+
+            <a
+                href="{{ url_for('issue_book_page') }}"
+                class="nav-item"
+            >
+                <span class="nav-icon">📖</span>
+                Issue Book
+            </a>
+
+
+            <!-- RETURN -->
+
+            <a
+                href="{{ url_for('return_book_page') }}"
+                class="nav-item"
+            >
+                <span class="nav-icon">↩️</span>
+                Return Book
+            </a>
+
+
+            <div class="nav-label">
+                Analytics
+            </div>
+
+
+            <!-- REPORTS -->
+
+            <a
+                href="{{ url_for('reports') }}"
+                class="nav-item"
+            >
+                <span class="nav-icon">📈</span>
+                Reports
+            </a>
+
+        </nav>
+
+
+        <!-- USER -->
+
+        <div class="sidebar-footer">
+
+            <div class="user-mini">
+
+                <div class="avatar">
+
+                    {% if session.get('fullname') %}
+                        {{ session.get('fullname')[0]|upper }}
+                    {% else %}
+                        A
+                    {% endif %}
+
+                </div>
+
+                <div class="user-info">
+
+                    <div class="user-name">
+                        {{ session.get('fullname', 'Administrator') }}
+                    </div>
+
+                    <div class="user-role">
+                        {{ session.get('role', 'Admin') }}
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- LOGOUT -->
+
+            <a
+                href="{{ url_for('logout') }}"
+                class="nav-item"
+                style="margin-top:8px;"
+            >
+                <span class="nav-icon">🚪</span>
+                Logout
+            </a>
+
+        </div>
+
+    </aside>
+
+
+    <!-- MOBILE OVERLAY -->
+
+    <div
+        class="overlay"
+        id="overlay"
+    ></div>
+
+
+    <!-- =====================================================
+         MAIN
+    ====================================================== -->
+
+    <main class="main">
+
+        <!-- TOPBAR -->
+
+        <header class="topbar">
+
+            <div class="topbar-left">
+
+                <button
+                    class="icon-button menu-button"
+                    id="menuButton"
+                    type="button"
+                >
+                    ☰
+                </button>
+
+                <div>
+
+                    <div class="page-title">
+                        Dashboard
+                    </div>
+
+                    <div class="page-subtitle">
+                        Overview of your library
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="topbar-actions">
+
+                <!-- SEARCH -->
+
+                <div class="search-box">
+
+                    <span class="search-icon">
+                        🔎
+                    </span>
+
+                    <input
+                        type="text"
+                        id="globalSearch"
+                        placeholder="Search books..."
+                    >
+
+                </div>
+
+
+                <!-- THEME -->
+
+                <button
+                    class="icon-button"
+                    id="themeToggle"
+                    type="button"
+                    title="Toggle theme"
+                >
+                    🌙
+                </button>
+
+            </div>
+
+        </header>
+
+
+        <!-- CONTENT -->
+
+        <div class="content">
+
+
+            <!-- FLASH MESSAGES -->
+
+            {% with messages = get_flashed_messages(with_categories=true) %}
+
+                {% if messages %}
+
+                    <div class="flash-container">
+
+                        {% for category, message in messages %}
+
+                            <div class="flash flash-{{ category }}">
+                                {{ message }}
+                            </div>
+
+                        {% endfor %}
+
+                    </div>
+
+                {% endif %}
+
+            {% endwith %}
+
+
+            <!-- =================================================
+                 WELCOME
+            ================================================== -->
+
+            <section class="welcome">
+
+                <h2>
+                    Good day,
+                    {{ session.get('fullname', 'Administrator') }} 
+                </h2>
+
+                <p>
+                    Here's what's happening in your library today.
+                    Keep your books and members organized.
+                </p>
+
+            </section>
+
+
+            <!-- =================================================
+                 STATISTICS
+            ================================================== -->
+
+            <section class="stats-grid">
+
+
+                <!-- TOTAL BOOKS -->
+
+                <div class="stat-card">
+
+                    <div class="stat-top">
+
+                        <div>
+
+                            <div class="stat-label">
+                                Total Books
+                            </div>
+
+                            <div class="stat-value">
+                                {{ stats.total_books }}
+                            </div>
+
+                            <div class="stat-description">
+                                Total book copies
+                            </div>
+
+                        </div>
+
+                        <div class="stat-icon blue">
+                            📚
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- TOTAL MEMBERS -->
+
+                <div class="stat-card">
+
+                    <div class="stat-top">
+
+                        <div>
+
+                            <div class="stat-label">
+                                Total Members
+                            </div>
+
+                            <div class="stat-value">
+                                {{ stats.total_members }}
+                            </div>
+
+                            <div class="stat-description">
+                                Registered members
+                            </div>
+
+                        </div>
+
+                        <div class="stat-icon green">
+                            👥
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- ISSUED -->
+
+                <div class="stat-card">
+
+                    <div class="stat-top">
+
+                        <div>
+
+                            <div class="stat-label">
+                                Issued Books
+                            </div>
+
+                            <div class="stat-value">
+                                {{ stats.issued_books }}
+                            </div>
+
+                            <div class="stat-description">
+                                Currently borrowed
+                            </div>
+
+                        </div>
+
+                        <div class="stat-icon orange">
+                            📖
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- OVERDUE -->
+
+                <div class="stat-card">
+
+                    <div class="stat-top">
+
+                        <div>
+
+                            <div class="stat-label">
+                                Overdue
+                            </div>
+
+                            <div class="stat-value">
+                                {{ stats.overdue_books }}
+                            </div>
+
+                            <div class="stat-description">
+                                Need attention
+                            </div>
+
+                        </div>
+
+                        <div class="stat-icon red">
+                            ⚠️
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 DASHBOARD GRID
+            ================================================== -->
+
+            <section class="dashboard-grid">
+
+
+                <!-- =================================================
+                     RECENT TRANSACTIONS
+                ================================================== -->
+
+                <div class="panel">
+
+                    <div class="panel-header">
+
+                        <div>
+
+                            <div class="panel-title">
+                                Recent Transactions
+                            </div>
+
+                            <div class="panel-subtitle">
+                                Latest issue and return activity
+                            </div>
+
+                        </div>
+
+                        <a
+                            href="{{ url_for('reports') }}"
+                            class="view-all"
+                        >
+                            View All
+                        </a>
+
+                    </div>
+
+
+                    <div class="table-container">
+
+                        <table>
+
+                            <thead>
+
+                                <tr>
+
+                                    <th>
+                                        Book
+                                    </th>
+
+                                    <th>
+                                        Member
+                                    </th>
+
+                                    <th>
+                                        Issue Date
+                                    </th>
+
+                                    <th>
+                                        Due Date
+                                    </th>
+
+                                    <th>
+                                        Status
+                                    </th>
+
+                                </tr>
+
+                            </thead>
+
+
+                            <tbody>
+
+                                {% if recent_transactions %}
+
+                                    {% for transaction in recent_transactions %}
+
+                                        <tr>
+
+                                            <td>
+                                                <div class="book-name">
+                                                    {{ transaction.book_title }}
+                                                </div>
+                                            </td>
+
+                                            <td>
+                                                <div class="member-name">
+                                                    {{ transaction.member_name }}
+                                                </div>
+                                            </td>
+
+                                            <td>
+                                                {{ transaction.issue_date }}
+                                            </td>
+
+                                            <td>
+                                                {{ transaction.due_date }}
+                                            </td>
+
+                                            <td>
+
+                                                {% if transaction.status == 'Issued' %}
+
+                                                    <span class="status status-issued">
+                                                        Issued
+                                                    </span>
+
+                                                {% elif transaction.status == 'Returned' %}
+
+                                                    <span class="status status-returned">
+                                                        Returned
+                                                    </span>
+
+                                                {% else %}
+
+                                                    <span class="status">
+                                                        {{ transaction.status }}
+                                                    </span>
+
+                                                {% endif %}
+
+                                            </td>
+
+                                        </tr>
+
+                                    {% endfor %}
+
+                                {% else %}
+
+                                    <tr>
+
+                                        <td
+                                            colspan="5"
+                                            class="empty-state"
+                                        >
+
+                                            <div class="empty-icon">
+                                                📭
+                                            </div>
+
+                                            No transactions yet.
+
+                                        </td>
+
+                                    </tr>
+
+                                {% endif %}
+
+                            </tbody>
+
+                        </table>
+
+                    </div>
+
+                </div>
+
+
+                <!-- =================================================
+                     RIGHT COLUMN
+                ================================================== -->
+
+                <div>
+
+
+                    <!-- QUICK ACTIONS -->
+
+                    <div class="panel">
+
+                        <div class="panel-header">
+
+                            <div>
+
+                                <div class="panel-title">
+                                    Quick Actions
+                                </div>
+
+                                <div class="panel-subtitle">
+                                    Common library tasks
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="quick-actions">
+
+
+                            <!-- BOOKS -->
+
+                            <a
+                                href="{{ url_for('books') }}"
+                                class="action"
+                            >
+
+                                <div class="action-icon">
+                                    📚
+                                </div>
+
+                                <div>
+
+                                    <div class="action-title">
+                                        Manage Books
+                                    </div>
+
+                                    <div class="action-description">
+                                        Add or manage books
+                                    </div>
+
+                                </div>
+
+                            </a>
+
+
+                            <!-- MEMBERS
+                                 IMPORTANT:
+                                 Endpoint is members
+                            -->
+
+                            <a
+                                href="{{ url_for('members') }}"
+                                class="action"
+                            >
+
+                                <div class="action-icon">
+                                    👤
+                                </div>
+
+                                <div>
+
+                                    <div class="action-title">
+                                        Manage Members
+                                    </div>
+
+                                    <div class="action-description">
+                                        Register and manage members
+                                    </div>
+
+                                </div>
+
+                            </a>
+
+
+                            <!-- ISSUE BOOK -->
+
+                            <a
+                                href="{{ url_for('issue_book_page') }}"
+                                class="action"
+                            >
+
+                                <div class="action-icon">
+                                    📖
+                                </div>
+
+                                <div>
+
+                                    <div class="action-title">
+                                        Issue Book
+                                    </div>
+
+                                    <div class="action-description">
+                                        Issue a book to member
+                                    </div>
+
+                                </div>
+
+                            </a>
+
+
+                            <!-- RETURN BOOK -->
+
+                            <a
+                                href="{{ url_for('return_book_page') }}"
+                                class="action"
+                            >
+
+                                <div class="action-icon">
+                                    ↩️
+                                </div>
+
+                                <div>
+
+                                    <div class="action-title">
+                                        Return Book
+                                    </div>
+
+                                    <div class="action-description">
+                                        Process book returns
+                                    </div>
+
+                                </div>
+
+                            </a>
+
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- OVERDUE -->
+
+                    <div class="overdue-card">
+
+                        <div class="overdue-title">
+                            ⚠ Overdue Books
+                        </div>
+
+                        <div class="overdue-text">
+
+                            There are
+
+                            <strong>
+                                {{ stats.overdue_books }}
+                            </strong>
+
+                            overdue book(s) that may require
+                            follow-up.
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+        </div>
+
+    </main>
+
+</div>
+
+
+<!-- =====================================================
+     JAVASCRIPT
+====================================================== -->
+
+<script>
+
+    /* =====================================================
+       THEME
+    ===================================================== */
+
+    const themeToggle =
+        document.getElementById("themeToggle");
+
+    const savedTheme =
+        localStorage.getItem("librarypro-theme");
+
+
+    function applyTheme(theme) {
+
+        if (theme === "light") {
+
+            document.body.classList.add(
+                "light-theme"
+            );
+
+            themeToggle.textContent = "☀️";
+
+        } else {
+
+            document.body.classList.remove(
+                "light-theme"
+            );
+
+            themeToggle.textContent = "🌙";
+
+        }
+
+    }
+
+
+    if (savedTheme) {
+
+        applyTheme(savedTheme);
+
+    } else {
+
+        applyTheme("dark");
+
+    }
+
+
+    themeToggle.addEventListener(
+        "click",
+        function () {
+
+            const isLight =
+                document.body.classList.contains(
+                    "light-theme"
+                );
+
+            const newTheme =
+                isLight ? "dark" : "light";
+
+            localStorage.setItem(
+                "librarypro-theme",
+                newTheme
+            );
+
+            applyTheme(newTheme);
+
+        }
+    );
+
+
+    /* =====================================================
+       MOBILE SIDEBAR
+    ===================================================== */
+
+    const menuButton =
+        document.getElementById("menuButton");
+
+    const sidebar =
+        document.getElementById("sidebar");
+
+    const overlay =
+        document.getElementById("overlay");
+
+
+    function closeSidebar() {
+
+        sidebar.classList.remove("open");
+
+        overlay.classList.remove("active");
+
+    }
+
+
+    if (menuButton) {
+
+        menuButton.addEventListener(
+            "click",
+            function () {
+
+                sidebar.classList.toggle("open");
+
+                overlay.classList.toggle(
+                    "active"
+                );
+
+            }
+        );
+
+    }
+
+
+    if (overlay) {
+
+        overlay.addEventListener(
+            "click",
+            closeSidebar
+        );
+
+    }
+
+
+    /* =====================================================
+       MOBILE NAVIGATION
+    ===================================================== */
+
+    document
+        .querySelectorAll(".nav-item")
+        .forEach(function(item) {
+
+            item.addEventListener(
+                "click",
+                function() {
+
+                    if (
+                        window.innerWidth <= 850
+                    ) {
+
+                        closeSidebar();
+
+                    }
+
+                }
+            );
+
+        });
+
+
+    /* =====================================================
+       GLOBAL SEARCH
+    ===================================================== */
+
+    const globalSearch =
+        document.getElementById("globalSearch");
+
+
+    if (globalSearch) {
+
+        globalSearch.addEventListener(
+            "keydown",
+            function(event) {
+
+                if (event.key === "Enter") {
+
+                    const value =
+                        globalSearch.value.trim();
+
+
+                    if (value.length > 0) {
+
+                        window.location.href =
+                            "{{ url_for('books') }}" +
+                            "?search=" +
+                            encodeURIComponent(value);
+
+                    }
+
+                }
+
+            }
+        );
+
+    }
+
+
+    /* =====================================================
+       AUTO HIDE FLASH
+    ===================================================== */
+
+    setTimeout(function() {
+
+        document
+            .querySelectorAll(".flash")
+            .forEach(function(message) {
+
+                message.style.transition =
+                    "opacity 0.5s ease";
+
+                message.style.opacity = "0";
+
+
+                setTimeout(function() {
+
+                    message.remove();
+
+                }, 500);
+
+            });
+
+    }, 5000);
+
+
+    /* =====================================================
+       CURRENT NAVIGATION
+    ===================================================== */
+
+    const currentPath =
+        window.location.pathname;
+
+
+    document
+        .querySelectorAll(".nav-item")
+        .forEach(function(item) {
+
+            const href =
+                item.getAttribute("href");
+
+
+            if (
+                href &&
+                href !== "#" &&
+                currentPath === href
+            ) {
+
+                document
+                    .querySelectorAll(".nav-item")
+                    .forEach(function(nav) {
+
+                        nav.classList.remove(
+                            "active"
+                        );
+
+                    });
+
+
+                item.classList.add("active");
+
+            }
+
+        });
+
+</script>
+
+</body>
+</html>
